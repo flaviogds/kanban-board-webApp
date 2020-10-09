@@ -1,0 +1,26 @@
+.card{
+    width: 95%;
+    height: 100px;
+    border: 1px solid #000000;
+    border-radius: 3px;
+    margin: auto;
+    margin-bottom: 10px;
+}
+.card:hover{
+    transform: scale(1.005);
+}
+
+.button{
+    float: right;
+}
+.title{
+    margin-top: 10px;
+}
+
+.priority{
+    float: right;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    margin-top: -40px;
+    margin-right: 10px;
+}
