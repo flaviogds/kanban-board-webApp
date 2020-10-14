@@ -26,8 +26,8 @@ const Table = props => {
             }
 
             <Button
-            value="&#9746;"
-            onAction={props.onRemove[0].bind(this, props)}
+                value="&#9746;"
+                onAction={props.onRemove[0].bind(this, props)}
             />
             
             <h4>{props.name}</h4>

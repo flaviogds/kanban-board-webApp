@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import Table from './Components/Table/Table';
-import Button from './Components/Button/Button';
-import Form from './Components/Form/Forms'
-import Input from './Components/Input/Input';
-import TextArea from './Components/TextArea'
-import Card from './Components/Card/Card'
-import Modal from './Components/Modal/Modal';
-
 import { v4 as uuidv4 } from 'uuid';
 
-import {collection} from './Components/model'
+import Table from './Components/Table/Table';
+import Button from './Components/Button/Button';
+import Form from './Components/Form/Forms';
+import Input from './Components/Input/Input';
+import TextArea from './Components/TextArea/TextArea';
+import Card from './Components/Card/Card';
+import Modal from './Components/Modal/Modal';
 
-import {setItem, getItem, clearStorage} from './Components/localStorage'
+import { collection } from './Components/defaultModel';
+import { properties } from './Components/defaultProperties';
+
+import { setItem, getItem } from './Components/localStorage'
 
 function App(){
 
@@ -21,26 +22,12 @@ function App(){
 
   const [newTable, setNewTable] = useState({name:'', position:'', cards:[]})
 
-  const [newCard, setNewCard] = useState({ id:'' ,table:'', title: '', description: '', priority: '', initial: '', final: '', properties : { color:'' } }) 
+  const [newCard, setNewCard] = useState({ position:'' ,table:'', title: '', description: '', priority: '', initial: '', final: '', properties : { color:'' } }) 
 
-  const [modalDrop, setModalDrop] = useState( {show:false, table:''} )
+  const [modalNew, setModalNew] = useState( {show:false, table: {...newTable}} )
 
-  const addTable = event => {
-    event.preventDefault();
-
-    setStorage({ ...storage, metadata: storage.tables.length+1, tables: [...storage.tables, newTable]});
-
-    setNewTable({name:'', position:'', cards:[]});
-  }
-
-/*   const handleCard = event => {
-    setNewCard( {...newCard,
-      title: event.target.name === 'title' ? event.target.value : newCard.title,
-      description: event.target.name === 'description' ? event.target.value : newCard.description,
-      priority: event.target.name === 'priority' ? event.target.value : newCard.priority
-    });
-  } */
-
+  const [modalEdit, setModalEdit] = useState( {show:false, card: {...newCard}} )
+  
   const handleChange = event => {
     event.preventDefault();
 
@@ -54,7 +41,23 @@ function App(){
         priority: event.target.name === 'priority' ? event.target.value : newCard.priority
       });
     }
+  }
+
+  const handleCard = event => {
+    setModalEdit( {...modalEdit, card: {...modalEdit.card,
+      title: event.target.name === 'title' ? event.target.value : modalEdit.card.title,
+      description: event.target.name === 'description' ? event.target.value : modalEdit.card.description,
+      priority: event.target.name === 'priority' ? event.target.value : modalEdit.card.priority
+    }});
   } 
+
+  const addTable = event => {
+    event.preventDefault();
+
+    setStorage({ ...storage, metadata: storage.tables.length+1, tables: [...storage.tables, newTable]});
+
+    setNewTable({name:'', position:'', cards:[]});
+  }
 
   const removeTable = table => {
     let filtereds = storage.tables.filter(target => target.position !== table.position);
@@ -116,10 +119,10 @@ function App(){
   const createCard = event => {
     event.preventDefault();
 
-    if(modalDrop.show) {
-      let table = storage.tables.filter(target => target.name === modalDrop.table.name)[0];
+    if(modalNew.show) {
+      let table = storage.tables.filter(target => target.name === modalNew.table.name)[0];
 
-      let card = {...newCard, id: table.cards.length, table: table.name, };
+      let card = {...newCard, position: table.cards.length, table: table.name, };
       
       let filtereds = storage.tables.filter(target => target.name !== table.name);
      
@@ -135,7 +138,7 @@ function App(){
   
       setNewCard( { ...newCard, title: '', description: '', priority: '', } );
 
-      setModalDrop({show: false})
+      handleDrop();
     }
   }
 
@@ -145,7 +148,7 @@ function App(){
 
     let table = storage.tables.filter(target => target.name === card.table)[0];
 
-    let updateCards = table.cards.filter(target => target.id !== card.id)
+    let updateCards = table.cards.filter(target => target.position !== card.position)
 
     table.cards= updateCards
 
@@ -159,12 +162,33 @@ function App(){
   const editCard = event => {
     event.preventDefault();
 
-    if(modalDrop.show) {
-      let table = storage.tables.filter(target => target.name === modalDrop.table.name)[0];
-    
-      let tables = storage.tables.filter(target => target.name !== table.name);
+    let from = storage.tables.filter(target => target.name === modalEdit.card.table).pop();
 
+    let filtereds = storage.tables.filter(target => target.name !== modalEdit.card.table);
+    
+    let card = from.cards.filter(target => target.position === modalEdit.card.position).pop();
+
+    from = {...from, cards: from.cards.filter(target => target.position !== modalEdit.card.position)};
+    
+    card = {
+      ...card,
+      title: modalEdit.card.title,
+      description: modalEdit.card.description
     }
+
+    let orderingCards = [...from.cards, card]
+
+    order(orderingCards)
+
+    from = {...from, cards: orderingCards}
+
+    filtereds = [...filtereds, from]
+
+    order(filtereds)
+
+    setStorage({...storage, tables: filtereds})
+
+    handleDrop();
   }
   
   const concluedCard = card => {
@@ -177,7 +201,7 @@ function App(){
   
       from = {...from, cards: from.cards.filter(target => target !== card)}
   
-      to = {...to, cards: [...to.cards, {...card, table: to.name, id: to.cards.length}]}
+      to = {...to, cards: [...to.cards, {...card, table: to.name, position: to.cards.length}]}
   
       tables = [...tables, from, to]
   
@@ -187,22 +211,26 @@ function App(){
     }
   }
 
-  const modal = table => {
-    setModalDrop({show: true, table: {...table}})
+  const handleShow = target => {
+    target.name
+      ? setModalNew( {show: true, table: {...target}, card: {...newCard}} )
+      : setModalEdit( {show: true, table: {...newTable}, card: {...target}} )
   }
-  const unshow = table => {
-    setModalDrop({show: false})
+
+  const handleDrop = () => {
+    setModalNew( {show: false, table: {...newTable}, card: {...newCard}} );
+    setModalEdit( {show: false, table: {...newTable}, card: {...newCard}} );
   }
 
   useEffect(() => {setItem('@kanban-web/collection', JSON.stringify(storage))
-  }, [storage, setStorage])
+  console.log(storage)}, [storage, setStorage])
 
   return (
     <>
       <div className="container">
         {storage.tables.map(table => (
           <Table key={uuidv4()} name={table.name} position={table.position}
-            cards={table.cards} onRemove={[removeTable.bind(table),modal.bind(table)]}
+            cards={table.cards} onRemove={[removeTable.bind(table), handleShow.bind(table)]}
             onDirection={[onLeft.bind(table), onRight.bind(table)]}
           >
            {table.cards.map(card => {
@@ -213,14 +241,14 @@ function App(){
                 description={card.description} 
                 properties={card.properties}
               >
-                <Button value="&#9998;" onAction={editCard.bind(this, card)}/>
+                <Button value="&#9998;" onAction={handleShow.bind(this, card)}/>
                 <Button value="&#9745;" onAction={concluedCard.bind(this, card)}/>
                 <Button value="&#9746;" onAction={removeCard.bind(this, card)}/>
                 
               </Card>
             );
           })}
-            {table.cards.length <= 0 ? <Button value="+" onAction={modal.bind(this, table)}/> : null}
+            {table.cards.length <= 0 ? <Button value="+" onAction={handleShow.bind(this, table)}/> : null}
           </Table>
         ))}
         <Form name="New Table" className="newTable" method="post" onSubmit={addTable.bind(newTable)} >
@@ -228,27 +256,22 @@ function App(){
           <Button name="normal" value="Add Table" type="submit" />
         </Form>
 
-        <Modal show={modalDrop.show} unshow={unshow} name="New Card">
-          <Form method="post" onSubmit={createCard.bind(modalDrop)}>
-            <div>
-              <Input name="title" value={newCard.title} required={true} onChange={handleChange.bind(modalDrop)}/>
-              <TextArea style={{resize: 'none'}} size='' name="description" value={newCard.description} required={true} onChange={handleChange.bind(modalDrop)}/>
-            </div>
+        <Modal show={modalNew.show} handleDrop={handleDrop} name="New Card">
+          <Form method="post" onSubmit={createCard.bind(modalNew)}>
+              <Input name="title" value={newCard.title} required={true} onChange={handleChange.bind(modalNew)}/>
+              <TextArea style={{resize: 'none'}} size='' name="description" value={newCard.description} required={true} onChange={handleChange.bind(modalNew)}/>
             <Button value="Add" type="onSubmit"/>
           </Form>
         </Modal>
 
-{/*         <Modal>
-          <Form name="Edit Card" className="newTable" method="post" onSubmit={editCard.bind(modalDrop)}>
-            <div>
-              <Input name="title" value={newCard.title} required={true} onChange={handleChange.bind(modalDrop)}/>
-              <Input name="description" value={newCard.description} required={true} onChange={handleChange.bind(modalDrop)}/>
-            </div>
+        <Modal  show={modalEdit.show} handleDrop={handleDrop} name="Edit Card">
+          <Form method="post" onSubmit={editCard.bind(modalNew)}>
+            <Input name="title" value={modalEdit.card.title} required={false} onChange={handleCard.bind(modalEdit)}/>
+            <Input name="description" value={modalEdit.card.description} required={false} onChange={handleCard.bind(modalEdit)}/>
             <Button value="Edit" type="onSubmit"/>
+            <Button value="Cancel" onAction={handleDrop}/>
           </Form>
-        </Modal> */}
-
-        <button onClick={clearStorage}>limparstorage</button>
+        </Modal>
       </div>
     </>
   );

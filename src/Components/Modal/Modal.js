@@ -5,7 +5,7 @@ import './Modal.css'
 const Modal = props => {
     return (
         <>
-            {props.show ? <div onClick={props.unshow} className="modal-drop"></div> : null} 
+            {props.show ? <div onClick={props.handleDrop} className="modal-drop"></div> : null} 
             <div
                 className="modal-wrapper"
                 style={{
@@ -16,7 +16,7 @@ const Modal = props => {
             }}>
                 <div className="modal-header">
                     <p>{props.name}</p>
-                    <span onClick={props.unshow} className="close-modal-btn">x</span>
+                    <span onClick={props.handleDrop} className="close-modal-btn">x</span>
                 </div>
                 <div className="modal-content">
                     <div className="modal-body">
