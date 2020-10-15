@@ -5,14 +5,12 @@ import './Modal.css'
 const Modal = props => {
     return (
         <>
-            {props.show ? <div onClick={props.handleDrop} className="modal-drop"></div> : null} 
+            {props.show ? <div onClick={props.handleDrop} className="modal-drop"></div> : null}
             <div
-                className="modal-wrapper"
+                className="modalContainer"
                 style={{
                     transform: props.show ? 'translateY(0vh)' : 'translateY(-100vh)',
                     opacity: props.show ? '1' : '0'
-
-
             }}>
                 <div className="modal-header">
                     <p>{props.name}</p>

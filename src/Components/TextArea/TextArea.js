@@ -3,7 +3,7 @@ import './TextArea'
 
 const TextArea = props => {
     return (
-        <>
+        <div className={props.className}>
             <label>{props.label}</label>
             <textarea
                 style={props.style}
@@ -15,7 +15,7 @@ const TextArea = props => {
                 onChange={props.onChange}
                 required={props.required}
             ></textarea>
-        </>
+        </div>
     );
 
 }

@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+import Header from './Components/Header/Header'
 import Table from './Components/Table/Table';
 import Button from './Components/Button/Button';
 import Form from './Components/Form/Forms';
 import Input from './Components/Input/Input';
-import TextArea from './Components/TextArea/TextArea';
+import TextArea from  './Components/TextArea/TextArea'
 import Card from './Components/Card/Card';
 import Modal from './Components/Modal/Modal';
 
 import { collection } from './Components/defaultModel';
-import { properties } from './Components/defaultProperties';
+//import { properties } from './Components/defaultProperties';
+import './App.css'
 
 import { setItem, getItem } from './Components/localStorage'
 
@@ -22,7 +24,7 @@ function App(){
 
   const [newTable, setNewTable] = useState({name:'', position:'', cards:[]})
 
-  const [newCard, setNewCard] = useState({ position:'' ,table:'', title: '', description: '', priority: '', initial: '', final: '', properties : { color:'' } }) 
+  const [newCard, setNewCard] = useState({ position:'' ,table:'', title: '', description: '', priority: 0, initial: '', final: '', properties : { color:"#FFFFFF" } }) 
 
   const [modalNew, setModalNew] = useState( {show:false, table: {...newTable}} )
 
@@ -38,7 +40,10 @@ function App(){
       setNewCard( {...newCard,
         title: event.target.name === 'title' ? event.target.value : newCard.title,
         description: event.target.name === 'description' ? event.target.value : newCard.description,
-        priority: event.target.name === 'priority' ? event.target.value : newCard.priority
+        priority: event.target.name === 'priority' ? event.target.value : newCard.priority,
+        initial: event.target.name === 'dateInit' ? event.target.value : newCard.initial,
+        final: event.target.name === 'dateEnd' ? event.target.value : newCard.final,
+        properties: {color: event.target.name === 'color' ? event.target.value : newCard.properties.color}
       });
     }
   }
@@ -47,7 +52,10 @@ function App(){
     setModalEdit( {...modalEdit, card: {...modalEdit.card,
       title: event.target.name === 'title' ? event.target.value : modalEdit.card.title,
       description: event.target.name === 'description' ? event.target.value : modalEdit.card.description,
-      priority: event.target.name === 'priority' ? event.target.value : modalEdit.card.priority
+      priority: event.target.name === 'priority' ? event.target.value : modalEdit.card.priority,
+      initial: event.target.name === 'dateInit' ? event.target.value : modalEdit.card.initial,
+      final: event.target.name === 'dateEnd' ? event.target.value : modalEdit.card.final,
+      properties: {color: event.target.name === 'color' ? event.target.value : modalEdit.card.properties.color}
     }});
   } 
 
@@ -136,7 +144,7 @@ function App(){
   
       setStorage( {...storage, tables: filtereds} );
   
-      setNewCard( { ...newCard, title: '', description: '', priority: '', } );
+      setNewCard( { position:'' ,table:'', title: '', description: '', priority: '', initial: '', final: '', properties : { color:'' } } );
 
       handleDrop();
     }
@@ -170,11 +178,7 @@ function App(){
 
     from = {...from, cards: from.cards.filter(target => target.position !== modalEdit.card.position)};
     
-    card = {
-      ...card,
-      title: modalEdit.card.title,
-      description: modalEdit.card.description
-    }
+    card = {...modalEdit.card}
 
     let orderingCards = [...from.cards, card]
 
@@ -222,56 +226,92 @@ function App(){
     setModalEdit( {show: false, table: {...newTable}, card: {...newCard}} );
   }
 
-  useEffect(() => {setItem('@kanban-web/collection', JSON.stringify(storage))
-  console.log(storage)}, [storage, setStorage])
+  useEffect(() => setItem('@kanban-web/collection', JSON.stringify(storage)), [storage, setStorage])
 
   return (
     <>
+      <Header/>
       <div className="container">
-        {storage.tables.map(table => (
-          <Table key={uuidv4()} name={table.name} position={table.position}
-            cards={table.cards} onRemove={[removeTable.bind(table), handleShow.bind(table)]}
-            onDirection={[onLeft.bind(table), onRight.bind(table)]}
-          >
-           {table.cards.map(card => {
-             return (
-              <Card
-                key={uuidv4()} 
-                title={card.title}
-                description={card.description} 
-                properties={card.properties}
-              >
-                <Button value="&#9998;" onAction={handleShow.bind(this, card)}/>
-                <Button value="&#9745;" onAction={concluedCard.bind(this, card)}/>
-                <Button value="&#9746;" onAction={removeCard.bind(this, card)}/>
-                
-              </Card>
-            );
-          })}
-            {table.cards.length <= 0 ? <Button value="+" onAction={handleShow.bind(this, table)}/> : null}
-          </Table>
-        ))}
-        <Form name="New Table" className="newTable" method="post" onSubmit={addTable.bind(newTable)} >
-          <Input name="table" type="text" value={newTable.name} onChange={handleChange.bind(newTable)} required={true} />
-          <Button name="normal" value="Add Table" type="submit" />
-        </Form>
+        <div className="tables">
+          {storage.tables.map(table => (
+            <Table
+              key={uuidv4()} 
+              name={table.name}
+              position={table.position}
+              cards={table.cards}
+              onRemove={ [removeTable.bind(table), handleShow.bind(table)] }
+              onDirection={ [onLeft.bind(table), onRight.bind(table)] }
+            >
+              {table.cards.map(card => {
+                return (
+                  <Card key={uuidv4()} card={{...card}}>
+                    <Button value="&#9998;" onAction={handleShow.bind(this, card)}/>
+                    <Button value="&#9745;" onAction={concluedCard.bind(this, card)}/>
+                    <Button value="&#9746;" onAction={removeCard.bind(this, card)}/>
+                    {/* <Button value="&#9746;" onAction={openCard.bind(this, card)}/> */}
+                  </Card>
+                );
+              })}
+              {table.cards.length <= 0 ? <div className="initial"> <Button value="+" onAction={handleShow.bind(this, table)}/> </div> : null}
+            </Table>
+          ))}
+          <div className="newTable">
 
-        <Modal show={modalNew.show} handleDrop={handleDrop} name="New Card">
-          <Form method="post" onSubmit={createCard.bind(modalNew)}>
-              <Input name="title" value={newCard.title} required={true} onChange={handleChange.bind(modalNew)}/>
-              <TextArea style={{resize: 'none'}} size='' name="description" value={newCard.description} required={true} onChange={handleChange.bind(modalNew)}/>
-            <Button value="Add" type="onSubmit"/>
-          </Form>
-        </Modal>
+            <Form name="New Table" method="post" onSubmit={addTable.bind(newTable)} >
+              <Input name="table" type="text" value={newTable.name} onChange={handleChange.bind(newTable)} required={true} />
+              <Button value="Add Table" type="submit" />
+            </Form>
 
-        <Modal  show={modalEdit.show} handleDrop={handleDrop} name="Edit Card">
-          <Form method="post" onSubmit={editCard.bind(modalNew)}>
-            <Input name="title" value={modalEdit.card.title} required={false} onChange={handleCard.bind(modalEdit)}/>
-            <Input name="description" value={modalEdit.card.description} required={false} onChange={handleCard.bind(modalEdit)}/>
-            <Button value="Edit" type="onSubmit"/>
-            <Button value="Cancel" onAction={handleDrop}/>
-          </Form>
-        </Modal>
+          </div>
+        </div>
+        
+        <div>
+          <Modal show={modalNew.show} handleDrop={handleDrop} name="New Card">
+            <Form method="post" onSubmit={createCard.bind(modalNew)}>
+              
+              <Input className="inputColor" type="color" name="color" value={newCard.properties.color} required={false} onChange={handleChange.bind(modalNew)}/>
+              
+              <Input className="input" label="Titulo" name="title" value={newCard.title} required={true} onChange={handleChange.bind(modalNew)}/>
+              
+              <TextArea className="textArea" style={{resize: 'none'}} size={{rows: '5', cols: '23'}} label="Descrição" name="description" value={newCard.description} required={true} onChange={handleChange.bind(modalNew)}/>
+              
+              <Input className="inputDate" type="date" label="Data Início" name="dateInit" value={newCard.initial} required={true} onChange={handleChange.bind(modalNew)}/>
+              
+              <Input className="inputDate" type="date" label="Previsão de Conclusão" name="dateEnd" value={newCard.final} required={false} onChange={handleChange.bind(modalNew)}/>
+              
+              <Input className="scrollRange" type="range" step={1} min={0} max={3} label={'Prioridade: '+newCard.priority} name="priority" value={newCard.priority} required={false} onChange={handleChange.bind(modalNew)}/>
+              
+              <div className="formButton">
+                <Button value="Adicionar" type="onSubmit"/>
+                <Button value="Cancelar" onAction={handleDrop}/>
+              </div>
+
+            </Form>
+          </Modal>
+
+          <Modal  show={modalEdit.show} handleDrop={handleDrop} name="Edit Card">
+            <Form method="post" onSubmit={editCard.bind(modalNew)}>
+              
+              <Input className="inputColor" type="color" label="color" name="color" value={modalEdit.card.properties.color} required={false} onChange={handleCard.bind(modalEdit)}/>
+              
+              <Input className="input" label="Titulo" name="title" value={modalEdit.card.title} required={false} onChange={handleCard.bind(modalEdit)}/>
+              
+              <TextArea className="textArea" style={{resize: 'none'}} size={{rows: '5', cols: '23'}} label="Descrição" name="description" value={modalEdit.card.description} required={false} onChange={handleCard.bind(modalEdit)}/>
+
+              <Input className="inputDate" type="date" label="Data Início" name="dateInit" value={modalEdit.card.initial} required={true} onChange={handleCard.bind(modalEdit)}/>
+              
+              <Input className="inputDate" type="date" label="Previsão de Conclusão" name="dateEnd" value={modalEdit.card.final} required={false} onChange={handleCard.bind(modalEdit)}/>
+              
+              <Input className="scrollRange" type="range" step={1} min={0} max={3} label={'Prioridade: '+modalEdit.card.priority} name="priority" value={modalEdit.card.priority} required={false} onChange={handleCard.bind(modalEdit)}/>
+              
+              <div className="formButton">
+                <Button value="Editar" type="onSubmit"/>
+                <Button value="Cancelar" onAction={handleDrop}/>
+              </div>
+              
+            </Form>
+          </Modal>
+        </div>
       </div>
     </>
   );

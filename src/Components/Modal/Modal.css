@@ -1,16 +1,17 @@
-.modal-wrapper {
-    width: 55%;
-    height: 55%;
+.modalContainer {
+    width: 14.65rem;
+    height: 30rem;
     max-width: 600px;
-    max-height: 600px;
+    max-height: 700px;
     position: fixed;
-    margin: 20.95% 0 0 22.5%;
+    margin-left: 5.5rem;
+    margin-top: 5.5rem;
     transition: all 1s ease;
     background-color: white;
 }
 
 .modal-header {
-    background-color: green;
+    background-color: rgba(0, 23, 99, 0.8);
     color: white;
     padding: 1rem;
     padding-top: 0.5rem;
