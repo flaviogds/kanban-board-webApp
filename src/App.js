@@ -8,6 +8,7 @@ import Form from './Components/Form/Forms';
 import Input from './Components/Input/Input';
 import TextArea from  './Components/TextArea/TextArea'
 import Card from './Components/Card/Card';
+import CardViewe from './Components/CardViewe/CardViewe'
 import Modal from './Components/Modal/Modal';
 
 import { collection } from './Components/defaultModel';
@@ -29,6 +30,8 @@ function App(){
   const [modalNew, setModalNew] = useState( {show:false, table: {...newTable}} )
 
   const [modalEdit, setModalEdit] = useState( {show:false, card: {...newCard}} )
+
+  const [modalViewe, setModalViewe] = useState( {show:false, card: {...newCard}} )
   
   const handleChange = event => {
     event.preventDefault();
@@ -144,13 +147,15 @@ function App(){
   
       setStorage( {...storage, tables: filtereds} );
   
-      setNewCard( { position:'' ,table:'', title: '', description: '', priority: '', initial: '', final: '', properties : { color:'' } } );
+      setNewCard( { position:'' ,table:'', title: '', description: '', priority: 0, initial: '', final: '', properties : { color:"#FFFFFF" } } );
 
       handleDrop();
     }
   }
 
   const removeCard = card => {
+
+    handleDrop()
 
     let filterTable = storage.tables.filter(target => target.name !== card.table);
 
@@ -195,7 +200,9 @@ function App(){
     handleDrop();
   }
   
-  const concluedCard = card => {
+  const advancedTask = card => {
+    handleDrop()
+
     let from = storage.tables.filter(target => target.name === card.table)[0];
 
     if(from.position < storage.tables.length-1) {
@@ -203,9 +210,31 @@ function App(){
 
       let tables = storage.tables.filter(target => target.name !== from.name && target.name !== to.name)
   
-      from = {...from, cards: from.cards.filter(target => target !== card)}
+      from = {...from, cards: from.cards.filter(target => target.position !== card.position)}
   
-      to = {...to, cards: [...to.cards, {...card, table: to.name, position: to.cards.length}]}
+      to = {...to, cards: [...to.cards, {...card, table: to.name, position: to.cards.length, properties: (to.position === storage.tables.length-1 ? {color: "#919191"} : {...card.properties}) }]}
+  
+      tables = [...tables, from, to]
+  
+      order(tables)
+  
+      setStorage({...storage, tables: tables})
+    }
+  }
+
+  const backTask = card => {
+    handleDrop()
+
+    let from = storage.tables.filter(target => target.name === card.table)[0];
+
+    if(from.position > 0) {
+      let to = storage.tables.filter(target => target.position === from.position-1)[0];
+
+      let tables = storage.tables.filter(target => target.name !== from.name && target.name !== to.name)
+  
+      from = {...from, cards: from.cards.filter(target => target.position !== card.position)}
+  
+      to = {...to, cards: [...to.cards, {...card, table: to.name, position: to.cards.length, properties: (to.position === storage.tables.length-1 ? {color: "#919191"} : {color: "#FFFFFF"}) }]}
   
       tables = [...tables, from, to]
   
@@ -216,21 +245,29 @@ function App(){
   }
 
   const handleShow = target => {
+    handleDrop()
     target.name
       ? setModalNew( {show: true, table: {...target}, card: {...newCard}} )
       : setModalEdit( {show: true, table: {...newTable}, card: {...target}} )
   }
 
+  const showCard = target => {
+    setModalViewe( {show: true, card: {...target}} )
+  }
+
   const handleDrop = () => {
     setModalNew( {show: false, table: {...newTable}, card: {...newCard}} );
     setModalEdit( {show: false, table: {...newTable}, card: {...newCard}} );
+    setModalViewe( {show: false, card: {...newCard}} )
   }
 
   useEffect(() => setItem('@kanban-web/collection', JSON.stringify(storage)), [storage, setStorage])
 
   return (
     <>
-      <Header/>
+      <Header>
+        NavBar
+      </Header>
       <div className="container">
         <div className="tables">
           {storage.tables.map(table => (
@@ -244,11 +281,11 @@ function App(){
             >
               {table.cards.map(card => {
                 return (
-                  <Card key={uuidv4()} card={{...card}}>
-                    <Button value="&#9998;" onAction={handleShow.bind(this, card)}/>
-                    <Button value="&#9745;" onAction={concluedCard.bind(this, card)}/>
-                    <Button value="&#9746;" onAction={removeCard.bind(this, card)}/>
-                    {/* <Button value="&#9746;" onAction={openCard.bind(this, card)}/> */}
+                  <Card key={uuidv4()} card={{...card}} onAction={showCard.bind(this, card)}>
+                    <Button value="edit" onAction={handleShow.bind(this, card)}/>
+                    <Button value="back" onAction={backTask.bind(this, card)}/>
+                    <Button value="go" onAction={advancedTask.bind(this, card)}/>
+                    <Button value="del" onAction={removeCard.bind(this, card)}/>
                   </Card>
                 );
               })}
@@ -256,12 +293,10 @@ function App(){
             </Table>
           ))}
           <div className="newTable">
-
             <Form name="New Table" method="post" onSubmit={addTable.bind(newTable)} >
               <Input name="table" type="text" value={newTable.name} onChange={handleChange.bind(newTable)} required={true} />
               <Button value="Add Table" type="submit" />
             </Form>
-
           </div>
         </div>
         
@@ -285,7 +320,6 @@ function App(){
                 <Button value="Adicionar" type="onSubmit"/>
                 <Button value="Cancelar" onAction={handleDrop}/>
               </div>
-
             </Form>
           </Modal>
 
@@ -298,7 +332,7 @@ function App(){
               
               <TextArea className="textArea" style={{resize: 'none'}} size={{rows: '5', cols: '23'}} label="Descrição" name="description" value={modalEdit.card.description} required={false} onChange={handleCard.bind(modalEdit)}/>
 
-              <Input className="inputDate" type="date" label="Data Início" name="dateInit" value={modalEdit.card.initial} required={true} onChange={handleCard.bind(modalEdit)}/>
+              <Input className="inputDate" type="date" label="Data Início" name="dateInit" value={modalEdit.card.initial} required={false} onChange={handleCard.bind(modalEdit)}/>
               
               <Input className="inputDate" type="date" label="Previsão de Conclusão" name="dateEnd" value={modalEdit.card.final} required={false} onChange={handleCard.bind(modalEdit)}/>
               
@@ -310,6 +344,15 @@ function App(){
               </div>
               
             </Form>
+          </Modal>
+
+          <Modal show={modalViewe.show} handleDrop={handleDrop} name={modalViewe.card.title}>
+            <CardViewe card={{...modalViewe.card}}>
+              <Button value="&#9998;" onAction={handleShow.bind(this, modalViewe.card)}/>
+              <Button value="&#9745;" onAction={backTask.bind(this, modalViewe.card)}/>
+              <Button value="&#9745;" onAction={advancedTask.bind(this, modalViewe.card)}/>
+              <Button value="&#9746;" onAction={removeCard.bind(this, modalViewe.card)}/>
+            </CardViewe>
           </Modal>
         </div>
       </div>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import './Card.css';
+import './CardViewe.css';
 
-const Card = props => {
+const CardViewe = props => {
     let now = new Date()
     
     return (
@@ -25,11 +25,11 @@ const Card = props => {
                     <h4>{props.card.title}</h4>
                 </div>   
                 <p className="description">
-                    {props.card.description.slice(0,100)+'... '}
+                    {props.card.description.slice()}
                 </p>
             </div>
         </div>
     );
 };
 
-export default Card;
+export default CardViewe;

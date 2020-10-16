@@ -3,7 +3,7 @@ import './Header.css'
 
 const Header = props => {
     return (
-        <header>Nav Bar</header>
+        <header>{props.children}</header>
     );
 }
 
