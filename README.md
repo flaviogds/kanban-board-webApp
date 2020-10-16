@@ -1,68 +1,41 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Kanban Board Web App
 
-## Available Scripts
+## Introdução
 
-In the project directory, you can run:
+Kanban Board Web App é uma aplicação simples e intuitiva para gerenciar fluxos de tarefas no dia-a-dia.
 
-### `yarn start`
+## Utilização
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+A aplicação inicia com um modelo padrão do tipo "a fazer", com as colunas: a fazer, em processo, concluido.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+#### Colunas
+Novas colunas podem ser criadas para atender a demanda de processos mais segmentados (como por exemplo um processo de testes).
 
-### `yarn test`
+#### Cartões
+Os cartões podem ser inseridos a qualquer momento e em qualquer coluna, apesar de não ser indicado (não é um problema da aplicação, só não é produtivo).
+Os cartões contem data de inicio, previsão de conclusão, prioridade e podem ser personalizados com cores.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
+## Limitações conhecidas
+A aplicação é um projeto em desenvolvimento e pode (muito provalmente irá) conter bugs.
+Contudo existem limitações conhecidas que foram ignoradas, como por exemplo o uso e compatibilidade do `localStorage` com alguns navegadores.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### Por que usar o localStorage?
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Essa aplicação é um protótipo usável desenvolvido como parte de um portifólio e não tem o objeitvo de se tornar comercial, ainda que o projeto possa (e irá) se desenolver ganhando correções, melhorias e novas funcionalidades.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Utilzar o localStorage permite ao usuario manter seus cartões e personalizações de interface, ao menos enquanto não limpar os dados do seu navegador.
 
-### `yarn eject`
+#### Boas e más escolhas...
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+A aplicação utiliza apenas o armazenamento persistente do localStorage, e o utliza apenas para manter os objetos de interesse do usuario.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Contribuições
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Contribuições são bem vindas sempre, o projeto se desenvolve nos termos da [licença MIT](./LICENCE.md)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Este projeto foi desenvolvido utilizando [Create React App](https://github.com/facebook/create-react-app).
 
-## Learn More
+Você pode clonar este repositório e no diretório do projeto rodar `npm install` (ou `yarn install` se o gerenciador de pacotes estiver instalado) para instalar todas as dependencias do projeto.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+E então use `npm start` (ou `yarn start`)
