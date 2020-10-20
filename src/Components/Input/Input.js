@@ -2,6 +2,9 @@ import React from 'react';
 import './Input.css'
 
 const Input = props => {
+
+    const handleChange = event => props.onInput(event.target.value);
+
     return (
         <div className={props.className}>
             <label>{props.label}</label>
@@ -10,7 +13,7 @@ const Input = props => {
                 name={props.name}
                 value={props.value}
                 placeholder={props.placeholder}
-                onChange={props.onChange}
+                onChange={handleChange}
                 required={props.required}
                 min={props.min}
                 max={props.max}

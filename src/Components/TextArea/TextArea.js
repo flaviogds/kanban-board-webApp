@@ -2,6 +2,9 @@ import React from 'react';
 import './TextArea'
 
 const TextArea = props => {
+
+    const handleChange = event => props.onInput(event.target.value);
+
     return (
         <div className={props.className}>
             <label>{props.label}</label>
@@ -12,7 +15,7 @@ const TextArea = props => {
                 type={props.type} 
                 name={props.name}
                 value={props.value}
-                onChange={props.onChange}
+                onChange={handleChange}
                 required={props.required}
             ></textarea>
         </div>
