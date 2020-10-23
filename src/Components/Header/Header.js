@@ -1,10 +1,9 @@
-import React from 'react';
-import './Header.css'
+import React, { Component }from 'react';
 
-const Header = props => {
-    return (
-        <header>{props.children}</header>
-    );
+export default class Header extends Component {
+    render(){
+        return (
+            <header>{this.props.children}</header>
+        );
+    }
 }
-
-export default Header;

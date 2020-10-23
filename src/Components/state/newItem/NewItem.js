@@ -1,3 +1,5 @@
+import { NEW_TABLE, NEW_CARD, DEFAULT } from './types';
+
 export const stateDefault = {
     card:
     {
@@ -5,7 +7,7 @@ export const stateDefault = {
         table:'',
         title: '',
         description: '',
-        priority: 0,
+        priority: 'Normal',
         initial: '',
         final: '',
         properties : { color:"#FFFFFF" }
@@ -21,11 +23,11 @@ export const stateDefault = {
 export default function NewItem(state, action) {
 
     switch (action.type){
-        case "NEWCARD":
+        case NEW_CARD:
             return {...stateDefault, card: action.payload};
-        case "NEWTABLE":
+        case NEW_TABLE:
             return {...stateDefault, table: action.payload};
-        case "DEFAULT":
+        case DEFAULT:
             return stateDefault;
         default: 
             throw new Error();

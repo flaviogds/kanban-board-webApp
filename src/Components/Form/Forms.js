@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './Form.css'
 
-const Forms = props => {
-    
-    return (
-        <form
-            className={props.className}
-            method={props.method}
-            onSubmit={props.onSubmit}
-        >
-        <h4>{props.name}</h4>
-        {props.children}
-      </form>
-    );
+export default class Forms extends Component {
+    render(){
+        return (
+            <form
+                className={this.props.className}
+                method={this.props.method}
+                onSubmit={this.props.onSubmit}
+            >
+            {this.props.name?<h4>{this.props.name}</h4>:null}
+            {this.props.children}
+          </form>
+        );
+    }
 }
-
-export default Forms;

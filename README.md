@@ -1,5 +1,9 @@
 # Kanban Board Web App
 
+
+![image](src/Components/default/logo_final.gif){:height="36px" width="36px"}
+
+
 ## Introdução
 
 Kanban Board Web App é uma aplicação simples e intuitiva para gerenciar fluxos de tarefas no dia-a-dia.

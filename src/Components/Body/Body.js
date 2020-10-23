@@ -1,42 +1,51 @@
 import React, { useContext, useReducer, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { order } from '../main'
+import { order } from '../main/main';
 
-import { Data } from '../state/data/Data';
-import { ModalShow } from '../state/modal/Modal';
-import NewItem, {stateDefault} from '../state/newItem/NewItem'
+import { Data } from '../state/Data/Data';
+import NewItem, {stateDefault} from '../state/NewItem/NewItem';
+import { TYPE_NEW_TABLE, TYPE_NEW_CARD, TYPE_DEFAULT } from '../state/NewItem/types';
 
 import Table from '../Table/Table';
 import Button from '../Button/Button';
 import Card from '../Card/Card';
 import Form from '../Form/Forms';
 import Input from '../Input/Input';
-import Modal from '../Modal/Modal'
-import TextArea from '../TextArea/TextArea'
-import CardViewe from '../CardViewe/CardViewe'
+import Datalist from '../Datalist/Datalist'
+import Modal from '../Modal/Modal';
+import TextArea from '../TextArea/TextArea';
+import CardViewe from '../CardViewe/CardViewe';
+
+import './Body.css'
 
 export default function Body () {
 
     const { data, setData } = useContext(Data);
 
-    const { show, setShow } =useContext(ModalShow);
-
     const [newItem, setNew] = useReducer(NewItem, stateDefault);
 
-    const [showCard, setShowCard] = useState({show: false})
+    const [ show, setShow ] = useState({show: false, card: newItem.card, modal: ''});
 
     const addTable = event => {
         event.preventDefault();
-        
-        setData({ ...data, metadata: { total_tables: data.tables.length+1 }, tables: [...data.tables, newItem.table]});
-        
-        setNew( { type: "DEFAULT" } );
+        if(data.tables.filter(table => table.name === newItem.table.name).length === 0 ){
+            if (newItem.table.name !== '') {
+                setData({ ...data, metadata: { total_tables: data.tables.length+1 }, tables: [...data.tables, newItem.table]});
+                setNew( TYPE_DEFAULT );
+            }
+            else{
+                window.alert("Name table is required")
+            }
+        }
+        else{
+            window.alert("Name table is already in use")
+        }
     }
         
     const createCard = event => {
         event.preventDefault();
         
-        if(show.show) {
+        if(show.show && newItem.card.title !== '') {
             let table = data.tables.filter(target => target.name === show.table.name)[0];
         
             let card = {...newItem.card, position: table.cards.length, table: table.name, };
@@ -53,7 +62,7 @@ export default function Body () {
         
             setData( {...data, tables: filtereds} );
         
-            setNew( { type: "DEFAULT" } );
+            setNew( TYPE_DEFAULT );
         
             handleDrop();
         }
@@ -88,6 +97,7 @@ export default function Body () {
     }
         
     const removeCard = card => {
+        handleDrop();
         let filterTable = data.tables.filter(target => target.name !== card.table);
         
         let table = data.tables.filter(target => target.name === card.table)[0];
@@ -163,37 +173,40 @@ export default function Body () {
         }
     }
 
+    const handleEdit = card => {
+        handleDrop();
+        setShow( { show: true, viewe: false, card: newItem.card, modal:"Edit Card"  } )
+        setNew( { ...TYPE_NEW_CARD, payload: { ...card } } )
+    }
+
     const handleDrop = () => {
-        setShow({show: false, card: '', tale: '', modal: ''})
-        setNew( { type: "DEFAULT" } )
+        setShow( { show: false, viewe: false, card: newItem.card} )
+        setNew( TYPE_DEFAULT )
     }
 
     return(
         <div className="tables">
             {data.tables.map(table => (
-                <Table key={uuidv4()} table={{...table}}>
+                <Table key={uuidv4()} onAction={() => setShow({ show: true, viewe: false, card: newItem.card, table: table, modal:"New Card" })} table={{...table}}>
                     {table.cards.map(card => {
                         return(
-                            <Card key={uuidv4()} card={{...card}} onAction={() => setShowCard( { show: true, card: { ...card } } ) }>
+                            <Card key={uuidv4()} card={{...card}} onAction={target => setShow( {...target, viewe: true } ) }>
                                 <Button
                                     value="edit"
-                                    onAction={() => {
-                                        setShow( { show: true, modal:"Edit Card" } )
-                                        setNew( { type: "NEWCARD", payload: { ...card } } )
-                                        }}/>
+                                    onAction={handleEdit.bind(this, card)}/>
                                 <Button
-                                    value="back"
+                                    value="&#9664;"
                                     onAction={backTask.bind(this, card)}/>
                                 <Button
-                                    value="go"
+                                    value="&#9654;"
                                     onAction={advancedTask.bind(this, card)}/>
                                 <Button
-                                    value="del"
+                                    value="&#9940;"
                                     onAction={removeCard.bind(this, card)}/>
                             </Card>
                         );
                     })}
-                    {table.cards.length === 0 ? <div className="initial"><Button value="+" onAction={() => (setShow({show: true, table: table, modal:"New Card"}))}/></div> : null}
+                    {table.cards.length === 0 ? <div className="initial"><Button value="&#10133;" onAction={() => (setShow({show: true, viewe:false, card: newItem.card, table: table, modal:"New Card"}))}/></div> : null}
                 </Table>
             ))}
             <Form className="newTable" name="New Table" method="post" onSubmit={addTable.bind(newItem)} >
@@ -201,69 +214,75 @@ export default function Body () {
                     name="table"
                     type="text"
                     value={newItem.table.name}
-                    onInput={(event) => (setNew( { type: "NEWTABLE", payload: { ...newItem.table, name: event } } ))}
-                    required={true}
+                    onInput={event => setNew( { ...TYPE_NEW_TABLE, payload: { ...newItem.table, name: event, position: data.tables.length } } )}
                 />
                 <Button value="Add Table" type="submit" />
             </Form>
             <Modal show={show.show} handleDrop={handleDrop} name={show.modal}>
-                <Form method="post" onSubmit={ show.modal === "Edit Card" ? editCard.bind(show) : createCard.bind(show)}>
+                <Form
+                    className="inputCard"
+                    method="post"
+                    onSubmit={ show.modal === "Edit Card" ? editCard.bind(show) : createCard.bind(show)}>
                 
                     <Input
-                        className="inputColor"
+                        className="color"
                         type="color"
                         name="color"
                         value={newItem.card.properties.color}
-                        onInput={(event) => (setNew( { type: "NEWCARD", payload: { ...newItem.card, properties: { color: event } } } ))}/>
+                        onInput={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, properties: { color: event } } } )}
+                    />
                     
                     <Input
-                        className="input"
+                        className="title"
                         label="Titulo"
                         name="title"
-                        required={true}
                         value={newItem.card.title}
-                        onInput={(event) => (setNew( { type: "NEWCARD", payload: { ...newItem.card, title: event } } ))}/>
+                        onInput={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, title: event } } )}
+                    />
                     
                     <TextArea
                         className="textArea"
                         style={{resize: 'none'}}
-                        size={{rows: '5', cols: '23'}}
+                        size={{rows: '', cols: ''}}
                         label="Descrição"
                         name="description"
-                        required={true}
                         value={newItem.card.description}
-                        onInput={(event) => (setNew( { type: "NEWCARD", payload: { ...newItem.card, description: event } } ))}/>
+                        onInput={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, description: event } } )}
+                    />
                     
                     <Input
-                        className="inputDate"
+                        className="date"
                         type="date"
                         label="Data Início"
                         name="dateInit"
                         value={newItem.card.initial}
-                        onInput={(event) => (setNew( { type: "NEWCARD", payload: { ...newItem.card, initial: event } } ))}/>
+                        onInput={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, initial: event } } )}
+                    />
                     
                     <Input
-                        className="inputDate"
+                        className="date"
                         type="date"
                         label="Previsão de Conclusão"
                         name="dateEnd"
                         value={newItem.card.final}
-                        onInput={(event) => (setNew( { type: "NEWCARD", payload: { ...newItem.card, final: event } } ))}/>
+                        onInput={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, final: event } } )}
+                    />
                     
-                    <Input
-                        className="scrollRange"
-                        type="range"
-                        step={1} min={0} max={3}
-                        label={'Prioridade: '+newItem.card.priority}
-                        name="priority" value={newItem.card.priority}
-                        onInput={(event) => (setNew( { type: "NEWCARD", payload: { ...newItem.card, priority: event } } ))}/>
-                    
-                    <Button className="formButton" value="Adicionar" type="onSubmit"/>
-                    <Button className="formButton" value="Cancelar" onAction={handleDrop}/>
+                    <Datalist
+                        className="priorityField"
+                        label={"Prioridade: "}
+                        items={["Normal","Mean","High","Immediate"]}
+                        onInput={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, priority: event } } )}
+                    />
+
+                    <Button value="Concluir" type="onSubmit"/>
+                    <Button value="Cancelar" onAction={handleDrop}/>
                 </Form>
             </Modal>
-            <Modal show={showCard.show} handleDrop={() => setShowCard(false)} name={showCard.card.title}>
-                <CardViewe card={{...showCard.card}}/>
+            <Modal show={show.viewe} handleDrop={handleDrop} name={show.card.title}>
+                <CardViewe card={show.card}>
+                    {show.children}
+                </CardViewe>
             </Modal>
         </div>
     );

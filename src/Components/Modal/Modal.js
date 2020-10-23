@@ -1,29 +1,30 @@
-import React from 'react';
+import React, { Component } from 'react';
+import close from '../default/close.svg';
 import './Modal.css'
 
-
-const Modal = props => {
-    return (
-        <>
-            {props.show ? <div onClick={props.handleDrop} className="modal-drop"></div> : null}
-            <div
-                className="modalContainer"
-                style={{
-                    transform: props.show ? 'translateY(0vh)' : 'translateY(-100vh)',
-                    opacity: props.show ? '1' : '0'
-            }}>
-                <div className="modal-header">
-                    <p>{props.name}</p>
-                    <span onClick={props.handleDrop} className="close-modal-btn">x</span>
-                </div>
-                <div className="modal-content">
-                    <div className="modal-body">
-                        {props.children}
+export default class Modal extends Component {
+    render(){
+        return (
+            <>
+                {this.props.show ? <div onClick={this.props.handleDrop} className="modal-drop"></div> : null}
+                <div
+                    className="modal"
+                    style={{
+                        transform: this.props.show ? 'translateY(0vh)' : 'translateY(-100vh)',
+                        display: this.props.show ? 'block' : 'none',
+                        opacity: this.props.show ? '1' : '0'
+                }}>
+                    <div className="modal-header">
+                        <p>{this.props.name}</p>
+                        <img src={close} onClick={this.props.handleDrop} alt="close" className="close-modal-btn"/>
+                    </div>
+                    <div className="modal-content">
+                        <div className="modal-body">
+                            {this.props.children}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </>
-    );
+            </>
+        );
+    }
 }
-
-export default Modal;

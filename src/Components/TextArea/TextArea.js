@@ -1,26 +1,21 @@
-import React from 'react';
-import './TextArea'
+import React, { Component } from 'react';
 
-const TextArea = props => {
-
-    const handleChange = event => props.onInput(event.target.value);
-
-    return (
-        <div className={props.className}>
-            <label>{props.label}</label>
-            <textarea
-                style={props.style}
-                rows={props.size.rows}
-                cols={props.size.cols}
-                type={props.type} 
-                name={props.name}
-                value={props.value}
-                onChange={handleChange}
-                required={props.required}
-            ></textarea>
-        </div>
-    );
-
+export default class TextArea extends Component{
+    render(){
+        return (
+            <div className={this.props.className}>
+                <label>{this.props.label}</label>
+                <textarea
+                    style={this.props.style}
+                    rows={this.props.size.rows}
+                    cols={this.props.size.cols}
+                    type={this.props.type} 
+                    name={this.props.name}
+                    value={this.props.value}
+                    onChange={event => this.props.onInput(event.target.value)}
+                    required={this.props.required}
+                ></textarea>
+            </div>
+        );
+    }
 }
-
-export default TextArea;

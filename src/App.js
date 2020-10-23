@@ -1,21 +1,23 @@
-import React from 'react';
-import DataApp from './Components/state/data/DataProvider'
-import Modal from './Components/state/modal/ModalProvider'
+import React, { Component } from 'react';
+import DataApp from './Components/state/Data/DataProvider';
 
-import Body from './Components/Body/Body'
-import Header from './Components/Header/Header'
+import Body from './Components/Body/Body';
+import Header from './Components/Header/Header';
+import NavBar from './Components/NavBar/NavBar';
 
 import './App.css'
 
-function App(){
-  return (
-    <DataApp>
-      <Header/>
-      <Modal>
+export default class App extends Component {
+  render(){
+    return (
+      <DataApp>
+  
+        <Header>
+          <NavBar/>
+        </Header>
+  
         <Body/>
-      </Modal>
-    </DataApp>
-  );
+      </DataApp>
+    );
+  }
 }
-
-export default App;

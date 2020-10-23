@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-function Button(props){
-    return (
-        <button className={props.name} onClick={props.onAction} type={props.type}>
-            {props.value}
-        </button>
-    );
+export default class Button extends Component{
+    render(){
+        return (
+            <button className={this.props.name} onClick={this.props.onAction} type={this.props.type}>
+                {this.props.value}
+            </button>
+        );
+    }
 }
-
-export default Button;
