@@ -4,9 +4,10 @@ export default class Input extends Component {
     render(){
         return (
             <div className={this.props.className}>
-                <label>{this.props.label}</label>
+                <label htmlFor={this.props.name}>{ this.props.label }</label>
                 <input
-                    type={this.props.type} 
+                    type={this.props.type}
+                    id={this.props.name}
                     name={this.props.name}
                     value={this.props.value}
                     placeholder={this.props.placeholder}
@@ -16,7 +17,8 @@ export default class Input extends Component {
                     max={this.props.max}
                     step={this.props.step}
                 />
-                {this.props.children}
+               
+                { this.props.children }
             </div>
         );
     }

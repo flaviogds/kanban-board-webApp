@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import { NavStyle } from './styled'
 
-export default class NavBar extends Component {
+export default class Navbar extends Component{
     render(){
-        return (
-            <nav className="nav-container">
-                {this.props.children}
-            </nav>
+        return(
+            <NavStyle>
+                <nav>
+                    <ul>{this.props.children}</ul>
+                </nav>
+            </NavStyle>
         );
-    };
+    }
 }

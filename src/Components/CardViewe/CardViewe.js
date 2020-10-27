@@ -11,13 +11,15 @@ export default class CardViewe extends Component{
                     <div className="controlViewe">
                         {this.props.children}
                     </div>
-                    <div className="headerViewe">
-                        <span className="dateViewe">
-                            Data Inicial: {this.props.card.initial}
-                        </span>
-                        <span className="dateViewe">
-                            Previsão: {this.props.card.final}
-                        </span>
+                    <div style={{color: this.props.card.properties.colorFont}} className="headerViewe">
+                        {this.props.card.initial
+                            ? <span className="dateViewe">Data Inicial: {this.props.card.initial}</span>
+                            : null
+                        }
+                        {this.props.card.final
+                            ? <span className="dateViewe">Previsão: {this.props.card.final}</span>
+                            : null
+                        }
                     </div>
                     <span className="priorityViewe">
                             Prioridade: <span>{(this.props.card.priority)}</span>

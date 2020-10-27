@@ -1,6 +1,10 @@
-export const properties = 
+export const defaultSetting = 
     {
-        table: '',
-        card:'',
-        background:'',
+        thema:
+        {
+            light: {
+                
+            },
+            dark: {}
+        }
     }

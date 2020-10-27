@@ -4,8 +4,9 @@ export default class TextArea extends Component{
     render(){
         return (
             <div className={this.props.className}>
-                <label>{this.props.label}</label>
+                <label htmlFor={this.props.name}>{this.props.label}</label>
                 <textarea
+                    id={this.props.name}
                     style={this.props.style}
                     rows={this.props.size.rows}
                     cols={this.props.size.cols}

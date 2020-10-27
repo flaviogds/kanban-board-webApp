@@ -10,11 +10,15 @@ export default class Modal extends Component {
                 <div
                     className="modal"
                     style={{
+                        background: this.props.style ? this.props.style : null,
                         transform: this.props.show ? 'translateY(0vh)' : 'translateY(-100vh)',
                         display: this.props.show ? 'block' : 'none',
                         opacity: this.props.show ? '1' : '0'
                 }}>
-                    <div className="modal-header">
+                    <div
+                        style={{background: this.props.style}}
+                        className="modal-header"
+                    >
                         <p>{this.props.name}</p>
                         <img src={close} onClick={this.props.handleDrop} alt="close" className="close-modal-btn"/>
                     </div>

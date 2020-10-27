@@ -6,7 +6,7 @@ export default class Datalist extends Component {
         <div className={this.props.className}>
             <label>{this.props.label}</label>
             <select onChange={ event => this.props.onInput(event.target.value) }>            
-                {this.props.items.map( item => <option value={item}>{item}</option> ) }
+                {this.props.items.map( (item, index) => <option value={item} key={index}>{item}</option> ) }
             </select>
         </div>
       );

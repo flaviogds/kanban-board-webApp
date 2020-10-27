@@ -18,7 +18,7 @@ export default class Card extends Component{
                     
                     <div className="card-body" onClick={this.props.onAction.bind(this, this.props)}>
                         <p className="card-title">{this.props.card.title}</p>
-                        <p className="description">
+                        <p className={"description"}>
                             {this.props.card.description.slice(0,150)+'... '}
                         </p>
                     </div>

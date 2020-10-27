@@ -34,11 +34,11 @@ export default function Body () {
                 setNew( TYPE_DEFAULT );
             }
             else{
-                window.alert("Name table is required")
+                window.alert("Insira um nome")
             }
         }
         else{
-            window.alert("Name table is already in use")
+            window.alert("Já existe uma coluna com este nome")
         }
     }
         
@@ -114,6 +114,7 @@ export default function Body () {
     }
         
     const advancedTask = card => {
+        handleDrop();
         let from = data.tables.filter(target => target.name === card.table)[0];
         
         if(from.position < data.tables.length-1) {
@@ -130,7 +131,6 @@ export default function Body () {
                         ...card,
                         table: to.name,
                         position: to.cards.length,
-                        properties: (to.position === data.tables.length-1 ? {color: "#919191"} : {...card.properties})
                     }
                 ]
             }
@@ -144,6 +144,7 @@ export default function Body () {
     }
         
     const backTask = card => {
+        handleDrop();
         let from = data.tables.filter(target => target.name === card.table)[0];
         
         if(from.position > 0) {
@@ -160,7 +161,6 @@ export default function Body () {
                         ...card,
                         table: to.name,
                         position: to.cards.length,
-                        properties: (to.position === data.tables.length-1 ? {color: "#919191"} : {color: "#FFFFFF"})
                     }
                 ]
             }
@@ -175,7 +175,7 @@ export default function Body () {
 
     const handleEdit = card => {
         handleDrop();
-        setShow( { show: true, viewe: false, card: newItem.card, modal:"Edit Card"  } )
+        setShow( { show: true, viewe: false, card: newItem.card, modal:"Editar Tarefa"  } )
         setNew( { ...TYPE_NEW_CARD, payload: { ...card } } )
     }
 
@@ -187,51 +187,85 @@ export default function Body () {
     return(
         <div className="tables">
             {data.tables.map(table => (
-                <Table key={uuidv4()} onAction={() => setShow({ show: true, viewe: false, card: newItem.card, table: table, modal:"New Card" })} table={{...table}}>
+                <Table
+                    key={uuidv4()}
+                    onAction={() => setShow(
+                        { ...show,
+                            show: true,
+                            table: table,
+                            modal:"Nova Tarefa"
+                        }
+                    )}
+                    table={{...table}}
+                >
                     {table.cards.map(card => {
                         return(
                             <Card key={uuidv4()} card={{...card}} onAction={target => setShow( {...target, viewe: true } ) }>
                                 <Button
-                                    value="edit"
+                                    value="&#128394;&#65039;"
+                                    tooltip="Editar"
                                     onAction={handleEdit.bind(this, card)}/>
                                 <Button
                                     value="&#9664;"
+                                    tooltip="Retroceder Tarefa"
                                     onAction={backTask.bind(this, card)}/>
                                 <Button
                                     value="&#9654;"
+                                    tooltip="Avançar Tarefa"
                                     onAction={advancedTask.bind(this, card)}/>
                                 <Button
                                     value="&#9940;"
+                                    tooltip="Remover Tarefa"
                                     onAction={removeCard.bind(this, card)}/>
                             </Card>
                         );
                     })}
-                    {table.cards.length === 0 ? <div className="initial"><Button value="&#10133;" onAction={() => (setShow({show: true, viewe:false, card: newItem.card, table: table, modal:"New Card"}))}/></div> : null}
+                    {table.cards.length === 0 
+                        ? <div
+                            className="initial">
+                                <Button
+                                    value="&#10133;"
+                                    tooltip="Nova Tarefa"
+                                    onAction={() => ( setShow(
+                                        { ...show,
+                                            show: true,
+                                            table: table,
+                                            modal:"Nova Tarefa"
+                                        }
+                                    ))}
+                                /></div>
+                        : null}
                 </Table>
             ))}
-            <Form className="newTable" name="New Table" method="post" onSubmit={addTable.bind(newItem)} >
+            <Form className="newTable" name="Nova Coluna" method="post" onSubmit={addTable.bind(newItem)} >
                 <Input
                     name="table"
                     type="text"
                     value={newItem.table.name}
-                    onInput={event => setNew( { ...TYPE_NEW_TABLE, payload: { ...newItem.table, name: event, position: data.tables.length } } )}
+                    onInput={event => setNew( { ...TYPE_NEW_TABLE,
+                        payload: { ...newItem.table,
+                            name: event,
+                            position: data.tables.length
+                        }
+                    } )}
                 />
-                <Button value="Add Table" type="submit" />
+                <Button value="Adicionar Coluna" type="submit" />
             </Form>
             <Modal show={show.show} handleDrop={handleDrop} name={show.modal}>
                 <Form
                     className="inputCard"
                     method="post"
-                    onSubmit={ show.modal === "Edit Card" ? editCard.bind(show) : createCard.bind(show)}>
+                    onSubmit={ show.modal === "Editar Tarefa" ? editCard.bind(show) : createCard.bind(show)}>
                 
                     <Input
                         className="color"
                         type="color"
                         name="color"
+                        tooltip="Cor do Cartão"
                         value={newItem.card.properties.color}
                         onInput={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, properties: { color: event } } } )}
                     />
-                    
+
                     <Input
                         className="title"
                         label="Titulo"
@@ -271,7 +305,7 @@ export default function Body () {
                     <Datalist
                         className="priorityField"
                         label={"Prioridade: "}
-                        items={["Normal","Mean","High","Immediate"]}
+                        items={["Normal","Média","Alta","Urgente"]}
                         onInput={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, priority: event } } )}
                     />
 
@@ -279,7 +313,7 @@ export default function Body () {
                     <Button value="Cancelar" onAction={handleDrop}/>
                 </Form>
             </Modal>
-            <Modal show={show.viewe} handleDrop={handleDrop} name={show.card.title}>
+            <Modal show={show.viewe} handleDrop={handleDrop} style={show.card.properties.color} name={show.card.title}>
                 <CardViewe card={show.card}>
                     {show.children}
                 </CardViewe>
