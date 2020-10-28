@@ -1,9 +1,13 @@
 import React, { Component }from 'react';
+import { Container } from './styles'
 
 export default class Header extends Component {
     render(){
         return (
-            <header>{this.props.children}</header>
+            <Container>
+                <h1>{this.props.logo}</h1>
+                {this.props.children}
+            </Container>
         );
     }
 }

@@ -3,6 +3,7 @@ import { NEW_TABLE, NEW_CARD, DEFAULT } from './types';
 export const stateDefault = {
     card:
     {
+        id: '',
         position:'',
         table:'',
         title: '',

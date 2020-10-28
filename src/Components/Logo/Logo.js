@@ -1,7 +1,0 @@
-import React, { Component } from "react";
-
-export default class Logo extends Component{
-    render(){
-        return <div><img src="../default/logo.gif" width="30px"/></div>
-    }    
-}   

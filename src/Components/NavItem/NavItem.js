@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ItemStyle } from './styled'
+import { Item } from './styled'
 
 export default class NavItem extends Component {
 
@@ -9,14 +9,13 @@ export default class NavItem extends Component {
     }
     render(){
         return(
-          <ItemStyle>
-            <li>
-              <a href="#" onClick={() => this.setState( { open: !this.state.open } )}>
-                {this.props.icon}
-              </a>
-              {this.state.open && this.props.children}
-            </li>
-          </ItemStyle>
+          <Item>
+            <a href="#"
+              onClick={() => this.setState( { open: !this.state.open } )}>
+              {this.props.icon}
+            </a>
+            {this.state.open && this.props.children}
+          </Item>
         );
     }
   }

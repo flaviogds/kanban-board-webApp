@@ -13,5 +13,11 @@ export default createGlobalStyle`
         font-size: 14px;
         color: ${props => props.theme.colors.text};
         font-family: sans-serif;
+        -webkit-font-smoothing: antialiased !important
+    }
+
+    html, body {
+        width: auto;
+        height: 100%;
     }
 `

@@ -6,4 +6,8 @@ export default {
         background: '#F5F5F5',
         text: '#000'
     },
+    components: {
+        table: 'rgb(255, 255, 255,0.5)',
+        card: '#fff',
+    }
 }

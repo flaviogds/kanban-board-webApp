@@ -3,12 +3,12 @@ import { order } from '../main/main'
 
 import { Data } from '../state/Data/Data';
 
-import Button from '../Button/Button';
-import { v4 as uuidv4 } from 'uuid';
+//import  from '../Button/Button';
 
-import './Table.css';
+import { Container, Header, Body, Title, Button } from './styles.js';
 
-const Table = props => {
+
+export default function Table(props){
 
     const { data, setData } = useContext(Data);
 
@@ -53,19 +53,20 @@ const Table = props => {
     }
 
     return (
-        <div className='table' key={uuidv4()}>
-            <div className="tableHeader">
-                <Button value="&#9664;" onAction={leftMove.bind(this, props.table)}/>
-                <Button value="&#9654;" onAction={rightMove.bind(this, props.table)}/>
-                {props.table.cards.length !== 0 ? <Button value="&#128204;" onAction={props.onAction}/> : null}
-                <Button value="&#9940;" onAction={removeTable.bind(this, props.table)}/>
-            </div>
-            
-            <h4>{props.table.name}</h4>
-
-            <div>{props.children}</div>
-        </div>
+        <Container key={props.id}>
+            <Header>
+                <Title>{props.table.name}</Title>
+                <Button onClick={leftMove.bind(this, props.table)}>&#9664;</Button>
+                <Button onClick={rightMove.bind(this, props.table)}>&#9654;</Button>
+                {
+                    props.table.cards.length !== 0 
+                    ? <Button onClick={props.onAction}>&#128204;</Button>
+                    : null
+                }
+                <Button onClick={removeTable.bind(this, props.table)}>&#9940;</Button>
+            </Header>
+            <Body className={props.id}>{props.children}</Body>
+        </Container>
     );
 }
 
-export default Table;

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const ItemStyle = styled.li`
+export const Item = styled.li`
 
     position: relative;
     width: auto;
@@ -19,6 +19,7 @@ export const ItemStyle = styled.li`
         border-radius: 50%;
         padding: 5px;
         margin: 2px;
+        margin-left: 15px;
         display: flex;
         align-items: center;
         justify-content: center;

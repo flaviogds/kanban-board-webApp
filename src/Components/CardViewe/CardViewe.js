@@ -1,36 +1,32 @@
-import React, { Component }from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import React from 'react';
 
-import './CardViewe.css';
+import close from '../default/close.svg';
 
-export default class CardViewe extends Component{  
-    render(){
-        return (
-            <>
-                <div className="viewe" style={{background: this.props.card.properties.color}} key={uuidv4()}>
-                    <div className="controlViewe">
-                        {this.props.children}
-                    </div>
-                    <div style={{color: this.props.card.properties.colorFont}} className="headerViewe">
-                        {this.props.card.initial
-                            ? <span className="dateViewe">Data Inicial: {this.props.card.initial}</span>
-                            : null
-                        }
-                        {this.props.card.final
-                            ? <span className="dateViewe">Previsão: {this.props.card.final}</span>
-                            : null
-                        }
-                    </div>
-                    <span className="priorityViewe">
-                            Prioridade: <span>{(this.props.card.priority)}</span>
-                    </span>
-                    <div> 
-                        <p className="description">
-                            {this.props.card.description}
-                        </p>
-                    </div>
-                </div>
-            </>
-        );
-    }
-};
+import { Header, HeaderCard, Modal, Smooth, Title, Card, VieweControl, Date, Priority, Description } from './styles'
+
+export default function CardViewe ({show, handleDrop}){  
+    return (
+    <>
+        {show.viewe ? <Smooth onClick={handleDrop} className="modal-drop"></Smooth> : null}
+        <Modal show={show}>
+            <Header show={show} >
+                <Title>{show.modal}</Title>
+                <img src={close} onClick={handleDrop} alt="close" className="close-modal-btn"/>
+            </Header>
+            <Card className="viewe" style={{background: show.card.properties.color}}>
+                <HeaderCard show={show}>
+                    <VieweControl> {show.children} </VieweControl>
+
+                    {show.card.initial ? <Date>Data Inicial: {show.card.initial}</Date> : null }
+
+                    {show.card.final ? <Date>Previsão: {show.card.final}</Date> : null }
+                </HeaderCard>
+
+                <Priority> Prioridade: {(show.card.priority)} </Priority>
+
+                <Description> {show.card.description} </Description>
+            </Card>
+        </Modal>
+    </>
+    );
+}

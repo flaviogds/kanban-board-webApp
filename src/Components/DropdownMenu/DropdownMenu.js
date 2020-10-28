@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
-import { DropStyle } from './styled'
+import { Dropdown, DropdownItem } from './styled'
 
 export default class DropDownMenu extends Component {
     render(){
         return(
-            <DropStyle>
-                <div>
-                    {this.props.children}
-                </div>
-            </DropStyle>
+            <Dropdown>
+                <DropdownItem>
+                    <li> 
+                        {this.props.leftchield ? <span>{this.props.leftchield}</span> : null}
+                        {this.props.children}
+                        {this.props.rightchield ? <span>{this.props.rightchield}</span> : null}
+                    </li>
+                </DropdownItem>
+            </Dropdown>
         );
     }
 }
