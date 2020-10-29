@@ -5,9 +5,7 @@ export default class Navbar extends Component{
     render(){
         return(
             <NavStyle>
-                <nav>
-                    <ul>{this.props.children}</ul>
-                </nav>
+                <ul>{this.props.children}</ul>
             </NavStyle>
         );
     }

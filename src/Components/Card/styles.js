@@ -22,7 +22,6 @@ export const Header = styled.header`
     align-items: center;
     justify-content:flex-end;
 `
-
 export const CardBody = styled.div`
     margin: 15px auto;
     padding: 0 10px;
@@ -33,9 +32,16 @@ export const CardTitle = styled.p`
     font-size: 1rem;
     font-weight: bold;
 `
-
 export const CardDescription = styled.p`
     margin: 0;
     text-align: center;
     font-size: 0.9rem;
+`
+export const Button = styled.button`
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    min-width: 30px;
+    max-width: fit-content;
+    cursor: pointer;
 `

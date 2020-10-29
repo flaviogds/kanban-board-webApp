@@ -11,12 +11,13 @@ export const stateDefault = {
         priority: 'Normal',
         initial: '',
         final: '',
-        properties : { color:"#FFFFFF" }
+        properties : { lock: false, color:"#FFFFFF" }
     },
     table:
     {
         name:'',
         position:'',
+        lock: true,
         cards:[]
     }
 }

@@ -1,19 +1,12 @@
 import styled from 'styled-components'
 
-
 export const Container = styled.div`
     display: flex;
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 41px);
     overflow-y: hidden;
     overflow-x: auto;
 
-    /* @media(max-width: 540px){
-        display: block;
-        overflow-y: auto;
-        overflow-x: auto;
-    } */
-    
 `
 export const Button = styled.button`
     align-items: center;
@@ -23,7 +16,6 @@ export const Button = styled.button`
     max-width: fit-content;
     cursor: pointer;
 `
-
 export const NewTask = styled.button`
     align-items: center;
     justify-content: center;

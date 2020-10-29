@@ -1,21 +1,18 @@
 import styled from 'styled-components'
 
 export const Item = styled.li`
-
     position: relative;
     width: auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    a {
+    span {
         color: #fff;
-        text-decoration: none;
-
+        cursor: pointer;
         width: 25px;
         height: 25px;
         background-color: ${props => props.theme.colors.primary};
-        border: 2px solid ${props => props.theme.colors.secondary};
+        border: 2px solid white;
         border-radius: 50%;
         padding: 5px;
         margin: 2px;

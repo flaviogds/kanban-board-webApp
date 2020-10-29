@@ -1,4 +1,4 @@
-import React, { useContext, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { order } from '../main/main';
 import { Data } from '../state/Data/Data';
@@ -8,15 +8,18 @@ import { TYPE_NEW_CARD, TYPE_DEFAULT } from '../state/NewItem/types';
 import Input from '../Input/Input';
 import Datalist from '../Datalist/Datalist';
 import TextArea from '../TextArea/TextArea';
-import close from '../default/close.svg';
 
-import { Modal, Form, Header,Title, Button, Smooth  } from './styles'
+import { Modal, Form, Header,Title, Button, Smooth, Close, Color  } from './styles'
 
 export default function NewCard({show, handleDrop}){
 
     const { data, setData } = useContext(Data);
 
     const [newItem, setNew] = useReducer(NewItem, stateDefault);
+
+    useEffect( () => {
+        setNew( { ...TYPE_NEW_CARD, payload: { ...show.card } } );
+    }, [show])
 
     const createCard = event => {
         event.preventDefault();
@@ -37,8 +40,7 @@ export default function NewCard({show, handleDrop}){
             order(filtereds);
         
             setData( {...data, tables: filtereds} );
-        
-            setNew( TYPE_DEFAULT );
+            setNew( TYPE_DEFAULT )
         
             handleDrop();
         }
@@ -68,7 +70,9 @@ export default function NewCard({show, handleDrop}){
         order(filtereds)
     
         setData({...data, tables: filtereds})
-    
+        
+        setNew( TYPE_DEFAULT )
+        
         handleDrop();
     }
 
@@ -79,60 +83,57 @@ export default function NewCard({show, handleDrop}){
             <Modal show={show}>
                 <Header show={show}>
                     <Title>{show.modal}</Title>
-                    <img src={close} onClick={handleDrop} alt="close"/>
+                    <Close onClick={handleDrop}/>
                 </Header>                   
                 <Form
                     method="post"
-                    onSubmit={ show.modal === "Editar Tarefa" ? editCard.bind(show) : createCard.bind(show)}>
+                    onSubmit={ show.modal === "Editar Tarefa" ? editCard.bind(show) : createCard.bind(show)}
+                >
                 
-                    <Input
-                        className="color"
+                    <Color
                         type="color"
-                        name="color"
+                        name={"color"}
                         value={newItem.card.properties.color}
-                        onInput={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, properties: { color: event } } } )}
+                        onChange={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, properties: { color: event.target.value } } } )}
                     />
 
-                    <Input
-                        className="title"
-                        label="Titulo"
-                        name="title"
-                        value={newItem.card.title}
-                        onInput={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, title: event } } )}
-                    />
+                    <label> Titulo
+                        <input
+                            label="Titulo"
+                            type="text"
+                            name="title"
+                            value={newItem.card.title}
+                            onChange={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, title: event.target.value } } )}
+                        />
+                    </label>
                     
-                    <TextArea
-                        className="textArea"
+                    <textarea
                         style={{resize: 'none'}}
                         size={{rows: '', cols: ''}}
-                        label="Descrição"
                         name="description"
                         value={newItem.card.description}
-                        onInput={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, description: event } } )}
+                        onChange={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, description: event.target.value } } )}
                     />
                     
-                    <Input
-                        className="date"
+                    <input
                         type="date"
-                        label="Data Início"
                         name="dateInit"
                         value={newItem.card.initial}
-                        onInput={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, initial: event } } )}
+                        onChange={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, initial: event.target.value } } )}
                     />
                     
-                    <Input
-                        className="date"
+                    <input
                         type="date"
-                        label="Previsão de Conclusão"
                         name="dateEnd"
                         value={newItem.card.final}
-                        onInput={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, final: event } } )}
+                        onChange={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, final: event.target.value } } )}
                     />
                     
                     <Datalist
                         className="priorityField"
                         label={"Prioridade: "}
-                        items={["Normal","Média","Alta","Urgente"]}
+                        value={newItem.priority}
+                        items={ [ "", "Normal", "Média", "Alta", "Urgente" ] }
                         onInput={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, priority: event } } )}
                     />
 

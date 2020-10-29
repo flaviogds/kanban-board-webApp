@@ -5,7 +5,6 @@ import { Data } from '../state/Data/Data';
 import NewItem, {stateDefault} from '../state/NewItem/NewItem';
 import { TYPE_NEW_TABLE, TYPE_DEFAULT } from '../state/NewItem/types';
 
-import Input from  '../Input/Input'
 import { Form, Title, Button } from './styles';
 
 export default function NewTable() {
@@ -33,14 +32,15 @@ export default function NewTable() {
     return(
         <Form method="post" onSubmit={addTable.bind(newItem)} >
             <Title>Nova Coluna</Title>
-            <Input
+            <input
                 name="table"
-        Form        type="text"
+                type="text"
                 value={newItem.table.name}
-                onInput={event => setNew( { ...TYPE_NEW_TABLE,
+                onChange={event => setNew( { ...TYPE_NEW_TABLE,
                     payload: { ...newItem.table,
                         id: uuidv4(),
-                        name: event,
+                        name: event.target.value,
+                        lock: true,
                         position: data.tables.length
                     }
                 } )}

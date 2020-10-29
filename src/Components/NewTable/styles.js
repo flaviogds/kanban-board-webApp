@@ -3,6 +3,7 @@ import styled from 'styled-components'
 export const Form = styled.form`
     width: 200px;
     height: 150px;
+    margin: 10px;
     border-radius: 5px;
     text-align: center;
     background: ${props => props.theme.components.table};

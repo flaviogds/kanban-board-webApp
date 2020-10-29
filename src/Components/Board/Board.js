@@ -1,25 +1,48 @@
 import React, { useContext, useReducer, useState } from 'react';
+import { MdModeEdit, MdSkipPrevious, MdSkipNext, MdAdd, MdDelete, MdLock, MdLockOpen } from 'react-icons/md'
 import { order } from '../main/main';
 
 import { Data } from '../state/Data/Data';
 import NewItem, {stateDefault} from '../state/NewItem/NewItem';
-import { TYPE_NEW_CARD, TYPE_DEFAULT } from '../state/NewItem/types';
 
 import Table from '../Table/Table';
 import Card from '../Card/Card';
 import NewCard from '../NewCard/NewCard';
 import CardViewe from '../CardViewe/CardViewe';
 
-import { Container, Button, NewTask} from './styles.js';
+import { Container, Button, NewTask } from './styles.js';
 
 export default function Board () {
 
     const { data, setData } = useContext(Data);
 
-    const [newItem, setNew] = useReducer(NewItem, stateDefault);
+    const [newItem ] = useReducer(NewItem, stateDefault);
 
-    const [ show, setShow ] = useState({show: false, card: newItem.card, modal: ''});
+    const [ show, setShow ] = useState({show: true, viewe: false, card: newItem.card, modal: ''});
 
+    const lock = card => {
+    
+        let from = data.tables.filter(target => target.name === card.table).pop();
+    
+        let filtereds = data.tables.filter(target => target.name !== card.table);
+    
+        from = {...from, cards: from.cards.filter(target => target.id !== card.id)};
+        
+        card = {...card,  properties: {...card.properties, lock: !card.properties.lock } }
+    
+        let orderingCards = [...from.cards, card]
+    
+        order(orderingCards)
+    
+        from = {...from, cards: orderingCards}
+    
+        filtereds = [...filtereds, from]
+    
+        order(filtereds)
+    
+        setData({...data, tables: filtereds})
+        
+    }
                
     const removeCard = card => {
         handleDrop();
@@ -98,15 +121,13 @@ export default function Board () {
         }
     }
 
-    const handleEdit = card => {
+    const handleEdit = card => { 
         handleDrop();
-        setNew( { ...TYPE_NEW_CARD, payload: { ...card } } );
-        setShow( { show: true, viewe: false, card: newItem.card, modal:"Editar Tarefa"  } );
+        setShow( { show: true, viewe: false, card: { ...card }, modal:"Editar Tarefa"  } );
     }
 
     const handleDrop = () => {
-        setShow( { show: false, viewe: false, card: newItem.card} )
-        setNew( TYPE_DEFAULT )
+        setShow( { show: false, viewe: false, card: newItem.card, modal: ''} )
     }
 
     return(
@@ -119,15 +140,16 @@ export default function Board () {
                 >
                     {table.cards.map(card => {
                         return(
-                            <Card key={card.key} card={card} onAction={target => setShow( {...target, viewe: true } ) }>
-                                <Button onClick={handleEdit.bind(this, card)}>&#128394;&#65039;</Button>
-                                <Button onClick={backTask.bind(this, card)}>&#9664;</Button>
-                                <Button onClick={advancedTask.bind(this, card)}>&#9654;</Button>
-                                <Button onClick={removeCard.bind(this, card)}>&#9940;</Button>
+                            <Card key={card.key} card={card} onAction={target => setShow( {...show, card: {...target}, viewe: true } ) }>
+                                {!card.properties.lock ? <Button onClick={handleEdit.bind(this, card)}>     <MdModeEdit/>   </Button> : null}
+                                {!card.properties.lock ? <Button onClick={backTask.bind(this, card)}>   <MdSkipPrevious/>   </Button> : null}
+                                {!card.properties.lock ? <Button onClick={advancedTask.bind(this, card)}>   <MdSkipNext/>   </Button> : null}
+                                {!card.properties.lock ? <Button onClick={removeCard.bind(this, card)}>     <MdDelete/>     </Button> : null}
+                                <Button onClick={ lock.bind(this, card) }> {!card.properties.lock ? <MdLockOpen/> : <MdLock/> } </Button>
                             </Card>
                         );
                     })}
-                    <NewTask onClick={() => setShow( { ...show, show: true, table: table, modal:"Nova Tarefa" } )} >&#10133;</NewTask>
+                    <NewTask onClick={() => setShow( { ...show, show: true, table: table, modal:"Nova Tarefa" } )} ><MdAdd/></NewTask>
                 </Table>
             ))}
 

@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
+import { MdDelete, MdNoteAdd, MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md'
 import { order } from '../main/main'
 
 import { Data } from '../state/Data/Data';
-
-//import  from '../Button/Button';
 
 import { Container, Header, Body, Title, Button } from './styles.js';
 
@@ -56,14 +55,10 @@ export default function Table(props){
         <Container key={props.id}>
             <Header>
                 <Title>{props.table.name}</Title>
-                <Button onClick={leftMove.bind(this, props.table)}>&#9664;</Button>
-                <Button onClick={rightMove.bind(this, props.table)}>&#9654;</Button>
-                {
-                    props.table.cards.length !== 0 
-                    ? <Button onClick={props.onAction}>&#128204;</Button>
-                    : null
-                }
-                <Button onClick={removeTable.bind(this, props.table)}>&#9940;</Button>
+                    <Button onClick={leftMove.bind(this, props.table)}><MdKeyboardArrowLeft/></Button>
+                    <Button onClick={rightMove.bind(this, props.table)}><MdKeyboardArrowRight/></Button>
+                { props.table.cards.length !== 0 ? <Button onClick={props.onAction}><MdNoteAdd/></Button> : null }
+                <Button onClick={removeTable.bind(this, props.table)}><MdDelete/></Button>
             </Header>
             <Body className={props.id}>{props.children}</Body>
         </Container>

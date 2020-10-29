@@ -10,10 +10,9 @@ export default class NavItem extends Component {
     render(){
         return(
           <Item>
-            <a href="#"
-              onClick={() => this.setState( { open: !this.state.open } )}>
-              {this.props.icon}
-            </a>
+            <span onClick={() => this.setState( { open: !this.state.open } )}>
+                {this.props.icon}
+            </span>
             {this.state.open && this.props.children}
           </Item>
         );

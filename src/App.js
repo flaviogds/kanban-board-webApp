@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { MdAdd, MdBuild } from 'react-icons/md'
 import DataApp from './Components/state/Data/DataProvider';
 import { ThemeProvider } from 'styled-components';
 
@@ -10,6 +11,7 @@ import Header from './Components/Header/Header';
 import Navbar from './Components/Navbar/Navbar';
 import NavItem from './Components/NavItem/NavItem';
 import DropdownMenu from './Components/DropdownMenu/DropdownMenu';
+import DropdownItem from './Components/DropdownItem/DropdownItem';
 import Switch from './Components/Switch/Switch';
 import NewTable from './Components/NewTable/NewTable';
 import Board from './Components/Board/Board';
@@ -25,24 +27,22 @@ export default class App extends Component {
     return (
       <ThemeProvider theme={this.state.light ? light : dark }>
         <DataApp>
-          <Header logo="LOGO">
+          <Header logo="">
             <Navbar>
 
-              <NavItem icon="+">
+              <NavItem icon={<MdAdd/>}>
                 <DropdownMenu>
-                  <NewTable/>
+                  <DropdownItem hover={false}>
+                    <NewTable/>
+                  </DropdownItem>
                 </DropdownMenu>
               </NavItem>
 
-              <NavItem icon="M">
+              <NavItem icon={<MdBuild/>}>
                 <DropdownMenu>
-                  <Switch onAction={() => this.setState({light: !this.state.light})}/>
-                </DropdownMenu>
-              </NavItem>
-
-              <NavItem icon="U">
-                <DropdownMenu>
-
+                  <DropdownItem>
+                    <Switch onAction={() => this.setState({light: !this.state.light})}/>
+                  </DropdownItem>
                 </DropdownMenu>
               </NavItem>
               
