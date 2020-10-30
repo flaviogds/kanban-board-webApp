@@ -2,9 +2,9 @@ import styled from 'styled-components'
 
 export const Item = styled.ul`
     color: #f5f5f5;
+    min-width: 200px;
+    min-height: 38.5px;
     text-decoration: none;
-    height: ${props => props.custom.high};
-    display: flex;
     align-items: center;
     border-radius: 25px;
     transition: 300ms;

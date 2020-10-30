@@ -6,7 +6,6 @@ export const Container = styled.div`
     height: calc(100vh - 41px);
     overflow-y: hidden;
     overflow-x: auto;
-
 `
 export const Button = styled.button`
     align-items: center;

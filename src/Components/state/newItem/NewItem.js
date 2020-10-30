@@ -11,7 +11,12 @@ export const stateDefault = {
         priority: 'Normal',
         initial: '',
         final: '',
-        properties : { lock: false, color:"#FFFFFF" }
+        properties : {
+            lock: false,
+            alert:false,
+            concluded: false,
+            color:"#FFFFFF"
+        }
     },
     table:
     {

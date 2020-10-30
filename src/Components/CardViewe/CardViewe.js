@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Header, HeaderCard, Modal, Smooth, Title, Card, VieweControl, Date, Priority, Description, Close, HeaderDate } from './styles'
+import { Header, HeaderCard, Modal, Smooth, Title, Card, Date, Priority, Description, Close, Checked } from './styles'
 
 export default function CardViewe ({show, handleDrop}){  
     return (
@@ -20,6 +20,7 @@ export default function CardViewe ({show, handleDrop}){
                 <Priority> Prioridade: {(show.card.priority)} </Priority>
 
                 <Description> {show.card.description} </Description>
+                {show.card.properties.concluded ? <Checked size={'7rem'}/> : null}
             </Card>
         </Modal>
     </>

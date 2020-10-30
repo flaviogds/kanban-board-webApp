@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-import { Container, Header, CardBody, CardTitle, CardDescription } from './styles.js';
+import { Container, Header, CardBody, CardTitle, CardDescription, Checked } from './styles.js';
 
 export default function Card ( { card, onAction, children} ){
     return (
-        <Container key={card.id} color={card.properties.color}>
+        <Container key={card.id} color={card.properties.color} concluded={card.properties.concluded}>
             <Header>
                 <CardTitle>
                     {card.priority}
@@ -16,6 +16,7 @@ export default function Card ( { card, onAction, children} ){
                     {card.description.slice(0,150) + ' ...'}
                 </CardDescription>
             </CardBody>
+            {card.properties.concluded ? <Checked size={'5rem'}/> : null}
         </Container>
     );
 }

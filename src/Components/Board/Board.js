@@ -1,5 +1,5 @@
 import React, { useContext, useReducer, useState } from 'react';
-import { MdModeEdit, MdSkipPrevious, MdSkipNext, MdAdd, MdDelete, MdLock, MdLockOpen } from 'react-icons/md'
+import { MdModeEdit, MdSkipPrevious, MdSkipNext, MdAdd, MdDelete, MdLock, MdLockOpen, MdAssignmentTurnedIn } from 'react-icons/md'
 import { order } from '../main/main';
 
 import { Data } from '../state/Data/Data';
@@ -18,7 +18,7 @@ export default function Board () {
 
     const [newItem ] = useReducer(NewItem, stateDefault);
 
-    const [ show, setShow ] = useState({show: true, viewe: false, card: newItem.card, modal: ''});
+    const [ show, setShow ] = useState({show: false, viewe: false, card: newItem.card, modal: ''});
 
     const lock = card => {
     
@@ -40,8 +40,29 @@ export default function Board () {
     
         order(filtereds)
     
-        setData({...data, tables: filtereds})
+        setData({...data, tables: filtereds})    
+    }
+    const concluded = card => {
+    
+        let from = data.tables.filter(target => target.name === card.table).pop();
+    
+        let filtereds = data.tables.filter(target => target.name !== card.table);
+    
+        from = {...from, cards: from.cards.filter(target => target.id !== card.id)};
         
+        card = {...card,  properties: {...card.properties, concluded: !card.properties.concluded } }
+    
+        let orderingCards = [...from.cards, card]
+    
+        order(orderingCards)
+    
+        from = {...from, cards: orderingCards}
+    
+        filtereds = [...filtereds, from]
+    
+        order(filtereds)
+    
+        setData({...data, tables: filtereds})    
     }
                
     const removeCard = card => {
@@ -144,6 +165,7 @@ export default function Board () {
                                 {!card.properties.lock ? <Button onClick={handleEdit.bind(this, card)}>     <MdModeEdit/>   </Button> : null}
                                 {!card.properties.lock ? <Button onClick={backTask.bind(this, card)}>   <MdSkipPrevious/>   </Button> : null}
                                 {!card.properties.lock ? <Button onClick={advancedTask.bind(this, card)}>   <MdSkipNext/>   </Button> : null}
+                                {!card.properties.lock ? <Button onClick={concluded.bind(this, card)}>   <MdAssignmentTurnedIn/>   </Button> : null}
                                 {!card.properties.lock ? <Button onClick={removeCard.bind(this, card)}>     <MdDelete/>     </Button> : null}
                                 <Button onClick={ lock.bind(this, card) }> {!card.properties.lock ? <MdLockOpen/> : <MdLock/> } </Button>
                             </Card>

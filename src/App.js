@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { MdAdd, MdBuild } from 'react-icons/md'
+import { MdAdd, MdDeleteForever, MdImportExport, MdInvertColors, MdSettings } from 'react-icons/md'
 import DataApp from './Components/state/Data/DataProvider';
 import { ThemeProvider } from 'styled-components';
 
@@ -12,9 +12,11 @@ import Navbar from './Components/Navbar/Navbar';
 import NavItem from './Components/NavItem/NavItem';
 import DropdownMenu from './Components/DropdownMenu/DropdownMenu';
 import DropdownItem from './Components/DropdownItem/DropdownItem';
-import Switch from './Components/Switch/Switch';
 import NewTable from './Components/NewTable/NewTable';
 import Board from './Components/Board/Board';
+import ThemeSelector from './Components/ThemeSelector/ThemeSelector'
+import ResetStorage from './Components/Reset/Reset';
+import InOutFiles from './Components/InOutFiles/InOutFiles';
 
 export default class App extends Component {
 
@@ -27,10 +29,10 @@ export default class App extends Component {
     return (
       <ThemeProvider theme={this.state.light ? light : dark }>
         <DataApp>
-          <Header logo="">
+          <Header logo={'KANBAN BOARD'}>
             <Navbar>
 
-              <NavItem icon={<MdAdd/>}>
+              <NavItem icon={<MdAdd size={'2rem'}/>}>
                 <DropdownMenu>
                   <DropdownItem hover={false}>
                     <NewTable/>
@@ -38,17 +40,27 @@ export default class App extends Component {
                 </DropdownMenu>
               </NavItem>
 
-              <NavItem icon={<MdBuild/>}>
+              <NavItem icon={<MdSettings size={'2rem'}/>}>
                 <DropdownMenu>
-                  <DropdownItem>
-                    <Switch onAction={() => this.setState({light: !this.state.light})}/>
+                  <DropdownItem hover={true}>
+                    <MdInvertColors style={ { verticalAlign: 'middle' } } size={'2rem'}/>
+                    <ThemeSelector/>
+                  </DropdownItem>
+                  <DropdownItem hover={true}>
+                    <MdImportExport style={ { verticalAlign: 'middle' } } size={'2rem'}/>
+                    <InOutFiles/>
+                  </DropdownItem>
+
+                  <DropdownItem hover={true}>
+                    <MdDeleteForever style={ { verticalAlign: 'middle' } } size={'2rem'}/>
+                    <ResetStorage/>
                   </DropdownItem>
                 </DropdownMenu>
               </NavItem>
               
             </Navbar>
           </Header>
-
+          
             <Board/>
         </DataApp>
         <GlobalStyle/>

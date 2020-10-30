@@ -52,5 +52,4 @@ export const SwitchStyle = styled.label`
         transform: translateX(7.5px);
     }
     
-
 `

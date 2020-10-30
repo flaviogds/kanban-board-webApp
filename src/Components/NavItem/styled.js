@@ -9,8 +9,8 @@ export const Item = styled.li`
     span {
         color: #fff;
         cursor: pointer;
-        width: 25px;
-        height: 25px;
+        width: 30px;
+        height: 30px;
         background-color: ${props => props.theme.colors.primary};
         border: 2px solid white;
         border-radius: 50%;

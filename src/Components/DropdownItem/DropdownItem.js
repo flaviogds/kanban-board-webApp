@@ -6,9 +6,9 @@ export default class DropdownItem extends Component {
         return(
             <Item custom={this.props}>
                 <li> 
-                    {this.props.leftchield ? <span>{this.props.leftchield}</span> : null}
+                    {this.props.leftchild ? <span>{this.props.leftchild}</span> : null}
                     {this.props.children}
-                    {this.props.rightchield ? <span>{this.props.rightchield}</span> : null}
+                    {this.props.rightchild ? <span>{this.props.rightchild}</span> : null}
                 </li>
             </Item>
         );

@@ -5,11 +5,10 @@ import { Data } from '../state/Data/Data';
 import NewItem, {stateDefault} from '../state/NewItem/NewItem';
 import { TYPE_NEW_CARD, TYPE_DEFAULT } from '../state/NewItem/types';
 
-import Input from '../Input/Input';
-import Datalist from '../Datalist/Datalist';
-import TextArea from '../TextArea/TextArea';
+import { priorities } from '../default/defaultPriorities'
 
-import { Modal, Form, Header,Title, Button, Smooth, Close, Color  } from './styles'
+import { Modal, Form, Header, Title, Smooth, Close, Color, Footer, Button  } from './styles'
+import { Body, Name, Description, DateField, Date, Priority  } from './styles'
 
 export default function NewCard({show, handleDrop}){
 
@@ -89,7 +88,6 @@ export default function NewCard({show, handleDrop}){
                     method="post"
                     onSubmit={ show.modal === "Editar Tarefa" ? editCard.bind(show) : createCard.bind(show)}
                 >
-                
                     <Color
                         type="color"
                         name={"color"}
@@ -97,48 +95,55 @@ export default function NewCard({show, handleDrop}){
                         onChange={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, properties: { color: event.target.value } } } )}
                     />
 
-                    <label> Titulo
-                        <input
-                            label="Titulo"
+                    <Body>
+                        Titulo
+                        <Name
                             type="text"
                             name="title"
                             value={newItem.card.title}
                             onChange={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, title: event.target.value } } )}
                         />
-                    </label>
-                    
-                    <textarea
-                        style={{resize: 'none'}}
-                        size={{rows: '', cols: ''}}
-                        name="description"
-                        value={newItem.card.description}
-                        onChange={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, description: event.target.value } } )}
-                    />
-                    
-                    <input
-                        type="date"
-                        name="dateInit"
-                        value={newItem.card.initial}
-                        onChange={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, initial: event.target.value } } )}
-                    />
-                    
-                    <input
-                        type="date"
-                        name="dateEnd"
-                        value={newItem.card.final}
-                        onChange={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, final: event.target.value } } )}
-                    />
-                    
-                    <Datalist
-                        className="priorityField"
-                        label={"Prioridade: "}
-                        value={newItem.priority}
-                        items={ [ "", "Normal", "Média", "Alta", "Urgente" ] }
-                        onInput={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, priority: event } } )}
-                    />
+                        Descrição
+                        <Description
+                            style={{resize: 'none'}}
+                            size={{rows: '', cols: ''}}
+                            name="description"
+                            value={newItem.card.description}
+                            onChange={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, description: event.target.value } } )}
+                        />
+                    </Body>
 
-                    <Button type="onSubmit">Concluir</Button>
-                    <Button onClick={handleDrop}>Cancelar</Button>
+                    <DateField>
+                        Data Inicial:
+                        <Date
+                            type="date"
+                            name="dateInit"
+                            value={newItem.card.initial}
+                            onChange={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, initial: event.target.value } } )}
+                        />
+                    </DateField>
+
+                    <DateField>
+                        Data Final:
+                        <Date
+                            type="date"
+                            name="dateEnd"
+                            value={newItem.card.final}
+                            onChange={event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, final: event.target.value } } )}
+                        />
+                    </DateField>
+
+                    <Priority>
+                        Priodidade: 
+                        <select name="priority" onChange={ event => setNew( { ...TYPE_NEW_CARD, payload: { ...newItem.card, priority: event.target.value } } ) }>            
+                            {priorities.map( (item, index) => <option value={item} key={index}>{item}</option> ) }
+                        </select>
+                    </Priority>
+
+                    <Footer>
+                        <Button type="onSubmit">Concluir</Button>
+                        <Button onClick={handleDrop}>Cancelar</Button>
+                    </Footer>
                 </Form>
             </Modal>
         </>

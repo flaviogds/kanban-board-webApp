@@ -55,8 +55,8 @@ export default function Table(props){
         <Container key={props.id}>
             <Header>
                 <Title>{props.table.name}</Title>
-                    <Button onClick={leftMove.bind(this, props.table)}><MdKeyboardArrowLeft/></Button>
-                    <Button onClick={rightMove.bind(this, props.table)}><MdKeyboardArrowRight/></Button>
+                <Button onClick={leftMove.bind(this, props.table)}><MdKeyboardArrowLeft/></Button>
+                <Button onClick={rightMove.bind(this, props.table)}><MdKeyboardArrowRight/></Button>
                 { props.table.cards.length !== 0 ? <Button onClick={props.onAction}><MdNoteAdd/></Button> : null }
                 <Button onClick={removeTable.bind(this, props.table)}><MdDelete/></Button>
             </Header>

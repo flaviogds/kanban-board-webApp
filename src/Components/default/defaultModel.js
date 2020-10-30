@@ -2,8 +2,8 @@ export const collection = {
     reference: "",
     metadata: { total_tables: 3 },
     tables: [
-        { id: 'default1', name: "A Fazer",      position: 0, lock: true, cards: [] },
-        { id: 'default2', name: "Em Produção",  position: 1, lock: true, cards: [] },
-        { id: 'default3', name: "Concluido",    position: 2, lock: true, cards: [] }
+        { id: 'default1', name: "A Fazer",      position: 0, lock: false, cards: [] },
+        { id: 'default2', name: "Em Produção",  position: 1, lock: false, cards: [] },
+        { id: 'default3', name: "Concluido",    position: 2, lock: false, cards: [] }
     ]
 }
