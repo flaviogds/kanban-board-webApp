@@ -10,7 +10,7 @@ export const Modal = styled.div`
     margin-top: calc(50vh - 207.5px);
     border-radius: 6px;
     transition: all 1s ease;
-    background: ${props => props.theme.colors.primary};
+    background: ${props => props.theme.colors.secondary};
     transform: ${props => props.show.show ? 'translateY(0vh)' : 'translateY(-100vh)'};
     opacity: ${props => props.show.show ? 1 : 0};
 `
@@ -86,14 +86,14 @@ export const Footer = styled.div`
     position: relative;
     display: flex;
     margin-top: 10px;
-    padding: 0 30px;
+    padding: 0 6px;
     justify-content: space-between;
 `
 export const Button = styled.button`
     align-items: center;
     justify-content: center;
     padding: 2px;
-    width: 60px;
+    width: 90px;
     cursor: pointer;
 `
 export const Smooth = styled.div`
@@ -101,5 +101,5 @@ export const Smooth = styled.div`
     width: 100%;
     position: fixed;
     transition: all 2s;
-    background: rgba(0, 0, 0, 0.75); 
+    background: rgba(0, 0, 0, 0.50); 
 `

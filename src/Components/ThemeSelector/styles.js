@@ -1,13 +1,6 @@
 import { MdClose } from 'react-icons/md'
 import styled from 'styled-components'
 
-export const Smooth = styled.div`
-    height: 100%;
-    width: 100%;
-    position: fixed;
-    transition: all 2s;
-    background: rgba(0, 0, 0, 0.70); 
-`
 export const Modal = styled.div`
     position: absolute;
     width: 350px;
@@ -30,7 +23,8 @@ export const Header = styled.header`
     padding-top: 0.5rem;
     display: flex;
     align-items: center;
-    justify-content: space-between;    
+    justify-content: space-between;
+    background-color: ${props => props.theme.colors.secondary};
 `
 export const Close = styled(MdClose)`
     margin: auto 0;
@@ -38,50 +32,55 @@ export const Close = styled(MdClose)`
 `
 export const Title = styled.h3`
 `
-export const Theme = styled.a`
-    list-style: none;
-    cursor: pointer;
-    margin-left: 10px;
-`
-
-
-/* export const Card = styled.div`
-    position: relative;
-    min-width: 350px;
-    height: calc(100% -35px);
-    padding: 0 25px 10px 25px;
+export const Selector = styled.div`
+    width: 100%;
+    height: 100%;
     align-items: center;
-    justify-content: center;
+    background: white;
 `
-export const HeaderCard = styled(Header)`
-    position: relative;
-    min-width: 100%;
-    height: 30px;
-    margin-top: 20px;
-    align-items: center;
-    justify-content:space-between;
-    background: none;
-    display: inline-flex;
-    box-shadow: none;
-    border-top: none;
+export const Sub = styled.div`
+    width: 100%;
+    height: fit-content;
+    padding: 0 35px;
 `
-export const Date = styled.span`
-    font-size: 0.8rem;
-    width: fit-content;
-    justify-content: space-between;
-    margin-right: ${props => props.marginRight};
-`
+export const Sample = styled.div`
+    width: 100px;
+    height: 100px;
+    display: inline-grid;
+    margin: 20px;
 
-export const Priority = styled.span`
+    :hover{
+        transform: scale(1.002);
+        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    }
+    
+    header {
+        width: 100%;
+        height: 20px;
+        text-align: center;
+        color: ${props => props.theme.colors.text};
+        background: ${props => props.theme.colors.secondary};
+    }
+    & div {
+        width: 100px;
+        height: 80px;
+        color: ${props => props.theme.colors.text};
+        background: ${props => props.theme.colors.primary};
+    }
+`
+export const Footer = styled.div`
+    width: 100%;
+    position: absolute;
     display: flex;
-    width: 200px;
-    margin: 20px 50px;
-    padding: 0 40px;
+    margin-top: 10px;
+    padding: 0 52px;
+    bottom: -15px;
     justify-content: space-between;
 `
-export const Description = styled.p`
-    height: 195px;
-    text-align: center;
+export const Button = styled.button`
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px;
+    width: 90px;
+    cursor: pointer;
 `
- */
-

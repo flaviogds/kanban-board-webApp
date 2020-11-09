@@ -2,16 +2,14 @@ import styled from 'styled-components'
 
 export const Form = styled.form`
     width: 200px;
-    height: 100px;
+    height: 105.5px;
     margin: 5px;
     border-radius: 5px;
     text-align: center;
     background: ${props => props.theme.components.table};
     input{
         margin-bottom: 7.5px;
-
     }
-    
 `
 export const Title = styled.h3`
     margin: 10px auto;

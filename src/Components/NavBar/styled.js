@@ -4,8 +4,7 @@ export const NavStyle = styled.nav`
 
     display: flex;
     align-content: center;
-    height: 40px;
-    background-color: ${props => props.theme.colors.primary};
+    height: 100%;
     padding: 0 1rem;
     justify-content: flex-end;
 

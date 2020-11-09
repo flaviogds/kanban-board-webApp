@@ -1,13 +1,23 @@
-import React, { Component } from 'react';
-import { Dropdown } from './styles'
+import React from 'react';
+import { Dropdown, Item } from './styles'
 
-export default class DropDownMenu extends Component {
-    render(){
+export default function DropDownMenu ( { style, children } ) {
+
+    function DropdownItem( {custom, children} ){
         return(
-            <Dropdown custom={this.props.custom}>
-                {console.log(this.props)}
-                {this.props.children}
-            </Dropdown>
+            <Item custom={{...custom}}>
+                {children.props.icon ? <span>{children.props.icon}</span> : null}
+                {children}
+            </Item>
         );
     }
+
+    return (
+        <Dropdown custom={{...style}}>
+            {children.type
+                ? <DropdownItem custom={{...style}} key={'newTableMount'}>{children}</DropdownItem>
+                : children.map((item, index) => <DropdownItem custom={{...style}} key={index}>{item}</DropdownItem>)
+            }
+        </Dropdown>
+    );
 }

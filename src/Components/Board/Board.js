@@ -12,7 +12,7 @@ import CardViewe from '../CardViewe/CardViewe';
 
 import { Container, Button, NewTask } from './styles.js';
 
-export default function Board () {
+export default function Board ({children}) {
 
     const { data, setData } = useContext(Data);
 
@@ -63,8 +63,7 @@ export default function Board () {
         order(filtereds)
     
         setData({...data, tables: filtereds})    
-    }
-               
+    }         
     const removeCard = card => {
         handleDrop();
         let filterTable = data.tables.filter(target => target.name !== card.table);
@@ -80,8 +79,7 @@ export default function Board () {
         order(filterTable)
         
         setData({...data, tables: filterTable})
-    }
-        
+    }    
     const advancedTask = card => {
         handleDrop();
         let from = data.tables.filter(target => target.name === card.table)[0];
@@ -110,8 +108,7 @@ export default function Board () {
         
             setData({...data, tables: tables})
         }
-    }
-        
+    }       
     const backTask = card => {
         handleDrop();
         let from = data.tables.filter(target => target.name === card.table)[0];
@@ -141,12 +138,10 @@ export default function Board () {
             setData({...data, tables: tables})
         }
     }
-
     const handleEdit = card => { 
         handleDrop();
         setShow( { show: true, viewe: false, card: { ...card }, modal:"Editar Tarefa"  } );
     }
-
     const handleDrop = () => {
         setShow( { show: false, viewe: false, card: newItem.card, modal: ''} )
     }
@@ -155,13 +150,13 @@ export default function Board () {
         <Container>           
             {data.tables.map(table => (
                 <Table
-                    key={table.key}
+                    key={table.name}
                     onAction={ () => setShow( { ...show, show: true, table: table, modal:"Nova Tarefa" } ) }
                     table={{...table}}
                 >
                     {table.cards.map(card => {
                         return(
-                            <Card key={card.key} card={card} onAction={target => setShow( {...show, card: {...target}, viewe: true } ) }>
+                            <Card key={card.id} card={card} onAction={target => setShow( {...show, card: {...target}, viewe: true } ) }>
                                 {!card.properties.lock ? <Button onClick={handleEdit.bind(this, card)}>     <MdModeEdit/>   </Button> : null}
                                 {!card.properties.lock ? <Button onClick={backTask.bind(this, card)}>   <MdSkipPrevious/>   </Button> : null}
                                 {!card.properties.lock ? <Button onClick={advancedTask.bind(this, card)}>   <MdSkipNext/>   </Button> : null}
@@ -175,9 +170,10 @@ export default function Board () {
                 </Table>
             ))}
 
-            <NewCard show={show} handleDrop={handleDrop}/>
-
+            <NewCard show={show} handleDrop={handleDrop}/>            
             <CardViewe show={show} handleDrop={handleDrop}/>
+
+            {children}
         </Container>
     );
 }

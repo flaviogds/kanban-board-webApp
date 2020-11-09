@@ -38,7 +38,7 @@ export default function NewCard({show, handleDrop}){
         
             order(filtereds);
         
-            setData( {...data, tables: filtereds} );
+            setData( {...data, metadata: {...data.metadata, total_tasks: data.metadata.total_tasks+1}, tables: filtereds} );
             setNew( TYPE_DEFAULT )
         
             handleDrop();
@@ -79,7 +79,7 @@ export default function NewCard({show, handleDrop}){
         <>
             {show.show ? <Smooth onClick={handleDrop} className="modal-drop"></Smooth> : null}
             
-            <Modal show={show}>
+            <Modal key={'newcard'} show={show}>
                 <Header show={show}>
                     <Title>{show.modal}</Title>
                     <Close onClick={handleDrop}/>

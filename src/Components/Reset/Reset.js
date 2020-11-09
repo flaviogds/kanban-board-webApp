@@ -8,9 +8,14 @@ export default function ResetStorage (){
 
     const { data, setData } = useContext(Data)
 
+    const menssage = (
+        "Tem certeza que deseja remover seu Kanban Board, "+
+        "esta ação não poderá ser desfeita. \n"+
+        "\nDeseja continuar?"
+    );
+
     const remove = () => {
-        if(window.confirm(
-            "Tem certeza que deseja remover seu Kanban Board, esta ação não poderá ser desfeita.\n\nDeseja continuar?")){
+        if(window.confirm(menssage)){
             clearStorage();
             setData({...collection})
         }

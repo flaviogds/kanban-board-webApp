@@ -25,7 +25,7 @@ export const Header = styled.header`
     align-items: center;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    background: rgba(230, 236 ,245,0.4);
+    background-color: ${props => props.theme.colors.secondary};
     padding: 1rem;
     padding-top: 0.5rem;
     display: flex;
@@ -38,50 +38,40 @@ export const Close = styled(MdClose)`
 `
 export const Title = styled.h3`
 `
-export const InAndOut = styled.a`
-    list-style: none;
-    cursor: pointer;
-    margin-left: 10px;
+ export const Body = styled.div`
+    width: 100%;
+    height: 100%;
+    background: #fff;
 `
-
-
-/* export const Card = styled.div`
-    position: relative;
-    min-width: 350px;
-    height: calc(100% -35px);
-    padding: 0 25px 10px 25px;
-    align-items: center;
-    justify-content: center;
-`
-export const HeaderCard = styled(Header)`
-    position: relative;
-    min-width: 100%;
+export const TabNavigation = styled.button`
+    width: 50%;
     height: 30px;
-    margin-top: 20px;
-    align-items: center;
-    justify-content:space-between;
-    background: none;
-    display: inline-flex;
-    box-shadow: none;
-    border-top: none;
-`
-export const Date = styled.span`
-    font-size: 0.8rem;
-    width: fit-content;
-    justify-content: space-between;
-    margin-right: ${props => props.marginRight};
-`
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: #555;
+    transition-delay: 150ms;
 
-export const Priority = styled.span`
+    :disabled {
+        background: white;
+        color:black;
+        border-bottom: none;
+    }
+    :enabled {
+    }
+`
+export const Footer = styled.div`
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
     display: flex;
-    width: 200px;
-    margin: 20px 50px;
-    padding: 0 40px;
+    margin-top: 10px;
+    padding: 0 55px;
     justify-content: space-between;
 `
-export const Description = styled.p`
-    height: 195px;
-    text-align: center;
+export const Button = styled.button`
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px;
+    width: 90px;
+    cursor: pointer;
 `
- */
-
