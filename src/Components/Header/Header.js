@@ -1,11 +1,11 @@
 import React, { Component }from 'react';
-import { Container } from './styles'
+import { Container, Title } from './styles'
 
 export default class Header extends Component {
     render(){
         return (
             <Container>
-                <h1>{this.props.logo}</h1>
+                <Title>{this.props.logo}</Title>
                 {this.props.children}
             </Container>
         );

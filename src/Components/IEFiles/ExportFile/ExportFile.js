@@ -1,27 +1,27 @@
-import React, { useContext, useState } from 'react';
-import { Data } from '../../state/Data/Data'
+import React, { useState } from 'react';
 
-import { Download, Tab, Link, Button } from './styles'
+import { Download, Tab, Link, Button, Footer } from './styles'
 
-export default function ExportFile(props) {
+export default function ExportFile({ open, close, data}) {
 
-    const { data } = useContext(Data)
-
-    const [ url, setUrl ] = useState( {
-            link: window.URL.createObjectURL(new Blob([JSON.stringify(data)], { type: "text/plain"})),
+    const [ url ] = useState( {
+            link: window.URL.createObjectURL(new Blob([JSON.stringify(data)], { type: "application/json"})),
             name: 'my-kanban-borad.json'
         }
     )
 
-    if(props.open){
+    if(open){
         return (
-            <Tab display={props.open}>
-                <Download size={'9rem'}/>
+            <Tab display={open ? 'inline-grid' : 'none'}>
+                <Download size={90}/>
                 <Link download={url.name} href={url.link} >
                     <Button>
                         Download
                     </Button>
                 </Link>
+                <Footer>
+                    <Button onClick={close}>Concluir</Button>
+                </Footer>
             </Tab>
         );
     }else{

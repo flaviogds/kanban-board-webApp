@@ -20,7 +20,7 @@ export default function CardViewe ({show, handleDrop}){
                 <Priority> Prioridade: {(show.card.priority)} </Priority>
 
                 <Description> {show.card.description} </Description>
-                {show.card.properties.concluded ? <Checked size={'7rem'}/> : null}
+                {show.card.properties.concluded ? <Checked size={90}/> : null}
             </Card>
         </Modal>
     </>

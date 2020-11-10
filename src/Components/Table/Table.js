@@ -14,7 +14,7 @@ export default function Table(props){
     const removeTable = table => {
         let filtereds = data.tables.filter(target => target.name !== table.name);
         filtereds.map((target, indice) => target.position = indice);
-        setData({ ...data, metadata: filtereds.length, tables: filtereds});
+        setData({ ...data, metadata: {...data.metadata, total_tables: filtereds.length }, tables: filtereds});
     }
     
     const leftMove = table => {
@@ -55,10 +55,10 @@ export default function Table(props){
         <Container key={props.id}>
             <Header>
                 <Title>{props.table.name}</Title>
-                <Button onClick={leftMove.bind(this, props.table)}><MdKeyboardArrowLeft/></Button>
-                <Button onClick={rightMove.bind(this, props.table)}><MdKeyboardArrowRight/></Button>
-                { props.table.cards.length !== 0 ? <Button onClick={props.onAction}><MdNoteAdd/></Button> : null }
-                <Button onClick={removeTable.bind(this, props.table)}><MdDelete/></Button>
+                <Button onClick={leftMove.bind(this, props.table)}><MdKeyboardArrowLeft style={ {verticalAlign: 'middle'} }/></Button>
+                <Button onClick={rightMove.bind(this, props.table)}><MdKeyboardArrowRight style={ {verticalAlign: 'middle'} }/></Button>
+                { props.table.cards.length !== 0 ? <Button onClick={props.onAction}><MdNoteAdd style={ {verticalAlign: 'middle'} }/></Button> : null }
+                <Button onClick={removeTable.bind(this, props.table)}><MdDelete style={ {verticalAlign: 'middle'} }/></Button>
             </Header>
             <Body className={props.id}>{props.children}</Body>
         </Container>

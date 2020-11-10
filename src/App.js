@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { MdAdd, MdDeleteForever, MdImportExport, MdInvertColors, MdSettings } from 'react-icons/md'
-import DataApp from './Components/state/Data/DataProvider';
+import React, { useContext, useState } from 'react';
+import { Data } from './Components/state/Data/Data';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyle from './Styles/global';
 import themes from './Components/ThemeSelector/themes';
+import { MdAdd, MdDeleteForever, MdImportExport, MdInfoOutline, MdInvertColors, MdSettings } from 'react-icons/md'
 
 import Header from './Components/Header/Header';
 import Navbar from './Components/Navbar/Navbar';
@@ -14,68 +14,97 @@ import Board from './Components/Board/Board';
 import ThemeSelector from './Components/ThemeSelector/ThemeSelector'
 import ResetStorage from './Components/Reset/Reset';
 import IEFiles from './Components/IEFiles/IEFiles';
+import About from './Components/About/About';
 
 import { DropItem, Smooth } from './style'
 
+
 export default function App(){
 
-  const [ show, setShow ] = useState({modal: false, selector: {theme: false, iefile: false}});
+  const [ show, setShow ] = useState({modal: false, selector: {theme: false, iefile: false, about: false}});
 
-  const [theme, setTheme] = useState(themes[0]);
+  const { data, setData } = useContext(Data);
 
   const selector = event => {
-    event === 'Theme'
-      ? setShow({modal: true, selector: {theme: true, iefiles: false}})
-      : setShow({modal: true, selector: {theme: false, iefiles: true}})
+    switch (event){
+      case 'About':
+        setShow({modal: true, selector: {theme: false, iefiles: false, about: true}});
+        break;
+      case 'Theme':
+        setShow({modal: true, selector: {theme: true, iefiles: false, about: false}});
+        break;
+      case 'IEFiles':
+        setShow({modal: true, selector: {theme: false, iefiles: true, about: false}});
+        break;
+      default:
+        throw Error;
+    }
   }
 
   const handleDrop = () => {
-    setShow({...show, modal: false, selector: {theme: false, iefile: false}})
+    setShow({...show, modal: false, selector: {theme: false, iefile: false, about: false}});
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <DataApp>
-        <Header logo={'KANBAN BOARD'}>
-          <Navbar>
+    <ThemeProvider theme={themes[data.metadata.theme]}>
 
-            <NavItem icon={<MdAdd size={'5rem'}/>}>
-              <DropdownMenu style={ { hover: false } }>
-                  <NewTable/>
-                  
-              </DropdownMenu>
-            </NavItem>
+      <Header logo={'KANBAN BOARD'}>
+        <Navbar>
 
-            <NavItem icon={<MdSettings size={'5rem'}/>}>
-              <DropdownMenu style={ { hover: true } }>
+          <NavItem icon={<MdAdd size={50}/>}>
+            <DropdownMenu style={ { hover: false } }>
+                <NewTable/>
                 
-              <DropItem onClick={() => selector('Theme')}>
-                <MdInvertColors size={'2rem'} style={ {verticalAlign: 'middle'} }/>
-                Temas
-              </DropItem>
+            </DropdownMenu>
+          </NavItem>
 
-              <DropItem onClick={() => selector('IEFiles')}>
-                <MdImportExport size={'2rem'} style={ {verticalAlign: 'middle'} }/>
-                Importar/Exportar
-              </DropItem>
+          <NavItem icon={<MdSettings size={50}/>}>
+            <DropdownMenu style={ { hover: true } }>
+              
+            <DropItem onClick={() => selector('Theme')}>
+              <MdInvertColors size={30} style={ {verticalAlign: 'middle'} }/>
+              Temas
+            </DropItem>
 
-              <DropItem onClick={''}>
-                <MdDeleteForever size={'2rem'} style={ {verticalAlign: 'middle'} }/>
-                <ResetStorage/>
-              </DropItem>
+            <DropItem onClick={() => selector('IEFiles')}>
+              <MdImportExport size={30} style={ {verticalAlign: 'middle'} }/>
+              Importar/Exportar
+            </DropItem>
+
+            <DropItem>
+              <MdDeleteForever size={30} style={ {verticalAlign: 'middle'} }/>
+              <ResetStorage/>
+            </DropItem>
+
+            <DropItem onClick={() => selector('About')}>
+              <MdInfoOutline  size={30} style={ {verticalAlign: 'middle'} }/>
+              Sobre
+            </DropItem>
+    
+            </DropdownMenu>
+          </NavItem>
+          
+        </Navbar>
+      </Header>
       
-              </DropdownMenu>
-            </NavItem>
-            
-          </Navbar>
-        </Header>
-        
-          <Board>
-            {show.modal ? <Smooth onClick={handleDrop}></Smooth> : null}
-            <IEFiles  open={show.selector.iefiles} close={handleDrop}/>
-            <ThemeSelector open={show.selector.theme} current={theme} close={handleDrop} response={target => setTheme(target)}/>
-          </Board>
-      </DataApp>
+      <Board>
+        {show.modal ? <Smooth onClick={handleDrop}></Smooth> : null}
+
+        <IEFiles
+          open={show.selector.iefiles} 
+          close={handleDrop}
+        />
+
+        <ThemeSelector
+          open={show.selector.theme}
+          current={data.metadata.theme}
+          close={handleDrop}
+          response={target => setData({...data, metadata: {...data.metadata, theme: target}})}
+        />
+
+        <About open={show.selector.about} close={handleDrop}/>
+      </Board>
+      
       <GlobalStyle/>
     </ThemeProvider>
   );

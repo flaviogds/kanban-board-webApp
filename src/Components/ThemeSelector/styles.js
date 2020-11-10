@@ -10,7 +10,6 @@ export const Modal = styled.div`
     margin-left: calc(50vw - 175px);
     transition: all 1s ease;
     transform: ${props => props.show ? 'translateY(0vh)' : 'translateY(-100vh)'};
-    display: ${props => props.show ? 'block' : 'none'};
     opacity: ${props => props.show ? 1 : 0};
 `
 export const Header = styled.header`

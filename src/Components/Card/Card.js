@@ -16,7 +16,7 @@ export default function Card ( { card, onAction, children} ){
                     {card.description.slice(0,150) + ' ...'}
                 </CardDescription>
             </CardBody>
-            {card.properties.concluded ? <Checked size={'5rem'}/> : null}
+            {card.properties.concluded ? <Checked size={50}/> : null}
         </Container>
     );
 }

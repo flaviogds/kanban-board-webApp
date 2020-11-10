@@ -12,7 +12,7 @@ export const Container = styled.div`
     box-shadow: 0 1px 4px 0 rgba(192, 208 ,230,0.8);
     border-top: 40px solid rgba(230, 236 ,245,0.4);
     cursor: grab;
-    background: ${props => props.concluded ? 'rgba(150, 150 , 150 ,0.5)' : props.color};
+    background: ${props => props.concluded ? 'rgba(150, 150 , 150 ,0.9)' : props.color};
     color: ${props => props.concluded ? 'rgba(50, 50 , 50 ,0.5)' : 'black'}
 `
 export const Header = styled.header`

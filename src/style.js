@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
-export const DropItem = styled.a`
-    list-style: none;
+export const DropItem = styled.div`
     cursor: pointer;
 `
 export const Smooth = styled.div`

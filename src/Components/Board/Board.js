@@ -157,16 +157,16 @@ export default function Board ({children}) {
                     {table.cards.map(card => {
                         return(
                             <Card key={card.id} card={card} onAction={target => setShow( {...show, card: {...target}, viewe: true } ) }>
-                                {!card.properties.lock ? <Button onClick={handleEdit.bind(this, card)}>     <MdModeEdit/>   </Button> : null}
-                                {!card.properties.lock ? <Button onClick={backTask.bind(this, card)}>   <MdSkipPrevious/>   </Button> : null}
-                                {!card.properties.lock ? <Button onClick={advancedTask.bind(this, card)}>   <MdSkipNext/>   </Button> : null}
-                                {!card.properties.lock ? <Button onClick={concluded.bind(this, card)}>   <MdAssignmentTurnedIn/>   </Button> : null}
-                                {!card.properties.lock ? <Button onClick={removeCard.bind(this, card)}>     <MdDelete/>     </Button> : null}
-                                <Button onClick={ lock.bind(this, card) }> {!card.properties.lock ? <MdLockOpen/> : <MdLock/> } </Button>
+                                {!card.properties.lock ? <Button onClick={handleEdit.bind(this, card)}>     <MdModeEdit style={ {verticalAlign: 'middle'} }/>   </Button> : null}
+                                {!card.properties.lock ? <Button onClick={backTask.bind(this, card)}>   <MdSkipPrevious style={ {verticalAlign: 'middle'} }/>   </Button> : null}
+                                {!card.properties.lock ? <Button onClick={advancedTask.bind(this, card)}>   <MdSkipNext style={ {verticalAlign: 'middle'} }/>   </Button> : null}
+                                {!card.properties.lock ? <Button onClick={concluded.bind(this, card)}>   <MdAssignmentTurnedIn  style={ {verticalAlign: 'middle'} }/>   </Button> : null}
+                                {!card.properties.lock ? <Button onClick={removeCard.bind(this, card)}>     <MdDelete style={ {verticalAlign: 'middle'} }/>     </Button> : null}
+                                <Button onClick={ lock.bind(this, card) }> {!card.properties.lock ? <MdLockOpen style={ {verticalAlign: 'middle'} }/> : <MdLock/> } </Button>
                             </Card>
                         );
                     })}
-                    <NewTask onClick={() => setShow( { ...show, show: true, table: table, modal:"Nova Tarefa" } )} ><MdAdd/></NewTask>
+                    <NewTask onClick={() => setShow( { ...show, show: true, table: table, modal:"Nova Tarefa" } )} ><MdAdd  style={ {verticalAlign: 'middle'} }/></NewTask>
                 </Table>
             ))}
 

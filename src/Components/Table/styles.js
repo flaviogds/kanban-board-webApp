@@ -29,5 +29,7 @@ export const Button = styled.button`
     align-items: center;
     justify-content: center;
     width: 30px;
+    padding: 0 2px;
+    padding-bottom: 4px;
     cursor: pointer;
 `

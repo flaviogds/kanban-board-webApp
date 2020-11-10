@@ -13,8 +13,8 @@ export default function ThemeSelector ({open, close, current, response}){
             </Header>
             <Selector>
                 <Sub>
-                    {themes.map(theme => (
-                        <Sample theme={{...theme}} key={theme.title} onClick={response.bind(this, theme)}>
+                    {themes.map((theme, indice) => (
+                        <Sample theme={{...theme}} key={theme.title} onClick={response.bind(this, indice)}>
                             <header theme={{...theme}}>
                                 {theme.title}
                             </header>
@@ -24,7 +24,7 @@ export default function ThemeSelector ({open, close, current, response}){
                 </Sub>
                 <Footer>
                     <Button onClick={close}>Concluir</Button>
-                    <Button onClick={response.bind(this, current), close}>Cancelar</Button>
+                    <Button onClick={response.bind(this, current)}>Cancelar</Button>
                 </Footer>
             </Selector>
         </Modal>

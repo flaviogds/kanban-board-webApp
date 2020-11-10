@@ -5,7 +5,7 @@ import styled from 'styled-components'
 export const Tab = styled.div`
     width: 100%;
     height: calc(100% - 30px);
-    display:  ${props =>  props.display? 'inline-grid' : 'none'};
+    display:  ${props =>  props.display};
     justify-content: center;
 `
 export const Download =styled(MdFileDownload)`
@@ -22,6 +22,14 @@ export const Button = styled.button`
     width: 100px;
     height: fit-content;
     text-align: center;
+`
+export const Footer = styled.div`
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    display: flex;
+    margin-top: 10px;;
+    justify-content: center;
 `
 
 

@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
-
-import { Header, Modal, Title, Close, Body, TabNavigation, Footer, Button } from './styles'
+import React, { useState, useContext } from 'react';
+import { Data } from '../state/Data/Data'
 
 import ImportFile from './ImportFile/ImportFile'
 import ExportFile from './ExportFile/ExportFile'
 
+import { Header, Modal, Title, Close, Body, TabNavigation } from './styles'
+
 export default function IEFiles ({open, close}){
     
-    const [ openTab, setOpen ] = useState(false);
+    const [ openTab, setOpen ] = useState(true);
+
+    const { data, setData } = useContext(Data);
 
     return (
         <Modal show={open}>
@@ -16,18 +19,31 @@ export default function IEFiles ({open, close}){
                 <Close onClick={close}/>
             </Header>
             <Body>
-                <TabNavigation onClick={() => setOpen(!openTab)} disabled={openTab}>Importar arquivo</TabNavigation>
-                <TabNavigation onClick={() => setOpen(!openTab)} disabled={!openTab}>Exportar arquivo</TabNavigation>
-                
-                <ImportFile open={openTab}/>
-                <ExportFile open={!openTab}/>
-            </Body>
+                <TabNavigation
+                    onClick={() => setOpen(!openTab)}
+                    disabled={openTab}
+                >
+                    Importar arquivo
+                </TabNavigation>
 
-            <Footer>
-                <Button onClick={''}>Concluir</Button>
+                <TabNavigation
+                    onClick={() => setOpen(!openTab)}
+                    disabled={!openTab}
+                >
+                    Exportar arquivo
+                </TabNavigation>
                 
-                <Button onClick={close}>Cancelar</Button>
-            </Footer>
+                <ImportFile
+                    open={openTab}
+                    close={close}
+                    submit={target => setData({...target})}
+                />
+                <ExportFile
+                    open={!openTab}
+                    close={close}
+                    data={data}
+                />
+            </Body>
         </Modal>
     );
 }

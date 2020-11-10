@@ -10,7 +10,8 @@ export const Container = styled.div`
 export const Button = styled.button`
     align-items: center;
     justify-content: center;
-    padding: 2px;
+    padding: 0 2px;
+    padding-bottom: 4px;
     min-width: 30px;
     max-width: fit-content;
     cursor: pointer;

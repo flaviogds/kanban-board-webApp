@@ -9,3 +9,8 @@ export const Container = styled.div`
     align-items: center;
     justify-content: space-between;
 `
+
+export const Title = styled.h1`
+    font-size: 1.5rem;
+    cursor: pointer;
+`

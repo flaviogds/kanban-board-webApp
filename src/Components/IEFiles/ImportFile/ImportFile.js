@@ -1,46 +1,58 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { Data } from '../../state/Data/Data'
+import React, { useState } from 'react';
 
-import { Tab, Load, Input, Loading } from './styles'
+import { Tab, Input, Footer, Button } from './styles'
 
-export default function ImportFiles (props) {
+export default function ImportFiles ({ open, close, submit}) {
 
     const [ newData, setNewData ] = useState(
         {
-            fileName: '',
-            collection: {
-            reference: "",
-            metadata: { total_tables: 0 },
+            reference: '',
+            metadata: { total_tables: 0, theme: 0, total_tasks: 0 },
             tables: []
-            }
         }
     )
 
-    if( newData.fileName !== '' ){
-        if(window.File && window.FileReader && window.FileList && window.Blob){
-            if(newData.fileName.files[0].type.match(/text.*/)){
-                let reader = new FileReader();
-                reader.onload = () => {
-                    try {
-                        setNewData({...newData, collection: JSON.parse(reader.result)});
-                    } catch(err) {
-                        console.log(err)
+    let file = '';
+
+    const uploadFile = target => {
+        file = target.files[0];
+
+        if( file !== '' ){
+            if(window.File && window.FileReader && window.FileList && window.Blob){
+                if(file.type.match(/application\/json/)){
+                    let reader = new FileReader();
+                    reader.onload = () => {
+                        try {
+                            if(JSON.parse(reader.result).reference === 'kanban-board'){
+                                setNewData({...JSON.parse(reader.result)});
+                            }
+                            else{
+                                alert("Arquivo não compativel.");
+                            }
+                        } catch(err) {
+                            console.log(err)
+                        }
                     }
+                    reader.readAsText(file);
                 }
-                reader.readAsText(newData.fileName.files[0]);
+                else {
+                    alert("Arquivo não suportado");
+                }
             }
-            else {
-                alert("Arquivo não suportado");
+            else{
+                alert("Não foi possivel executar.");
             }
-        }
-        else{
-            alert("Não foi possivel executar.");
         }
     }
 
     return(
-        <Tab display={props.open}>
-            <Input type="file" onChange={event => setNewData({...newData, fileName: event.target}) } />
+        <Tab display={open ? 'inline-grid' : 'none'}>
+            <Input type="file" accept="JSON/*" onChange={event => uploadFile(event.target) } />
+
+            <Footer>
+                <Button onClick={ newData.reference !== '' ? submit.bind(this, newData) : null }>Concluir</Button>
+                <Button onClick={close}>Cancelar</Button>
+            </Footer>
         </Tab>
     );
 }

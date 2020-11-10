@@ -17,7 +17,7 @@ export default function NewTable() {
         event.preventDefault();
         if(data.tables.filter(table => table.name === newItem.table.name).length === 0 ){
             if (newItem.table.name !== '') {
-                setData({ ...data, metadata: { total_tables: data.tables.length+1 }, tables: [...data.tables, newItem.table]});
+                setData({ ...data, metadata: { ...data.metadata, total_tables: data.tables.length+1 }, tables: [...data.tables, newItem.table]});
                 setNew( TYPE_DEFAULT );
             }
             else{

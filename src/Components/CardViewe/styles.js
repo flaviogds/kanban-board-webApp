@@ -11,8 +11,8 @@ export const Modal = styled.div`
     transition: all 1s ease;
     background: ${props => props.show.card.properties.color ? props.show.card.properties.color : 'white'};
     transform: ${props => props.show.viewe ? 'translateY(0vh)' : 'translateY(-100vh)'};
-    display: ${props => props.show.viewe ? 'block' : 'none'};
     opacity: ${props => props.show.viewe ? 1 : 0};
+    color: #000;
 `
 export const Header = styled.header`
     height: 35px;
