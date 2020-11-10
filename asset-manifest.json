@@ -1,24 +1,19 @@
 {
   "files": {
-    "main.css": "/kanban-board-webApp/static/css/main.ab87663f.chunk.css",
-    "main.js": "/kanban-board-webApp/static/js/main.76006809.chunk.js",
-    "main.js.map": "/kanban-board-webApp/static/js/main.76006809.chunk.js.map",
+    "main.js": "/kanban-board-webApp/static/js/main.2327bb24.chunk.js",
+    "main.js.map": "/kanban-board-webApp/static/js/main.2327bb24.chunk.js.map",
     "runtime-main.js": "/kanban-board-webApp/static/js/runtime-main.643c165b.js",
     "runtime-main.js.map": "/kanban-board-webApp/static/js/runtime-main.643c165b.js.map",
-    "static/js/2.adc68475.chunk.js": "/kanban-board-webApp/static/js/2.adc68475.chunk.js",
-    "static/js/2.adc68475.chunk.js.map": "/kanban-board-webApp/static/js/2.adc68475.chunk.js.map",
+    "static/js/2.fa1cdbbc.chunk.js": "/kanban-board-webApp/static/js/2.fa1cdbbc.chunk.js",
+    "static/js/2.fa1cdbbc.chunk.js.map": "/kanban-board-webApp/static/js/2.fa1cdbbc.chunk.js.map",
     "index.html": "/kanban-board-webApp/index.html",
-    "precache-manifest.206fded41b415fa44e6614c40b7e8227.js": "/kanban-board-webApp/precache-manifest.206fded41b415fa44e6614c40b7e8227.js",
+    "precache-manifest.cbe81673f14fa333cb66a6b95d328597.js": "/kanban-board-webApp/precache-manifest.cbe81673f14fa333cb66a6b95d328597.js",
     "service-worker.js": "/kanban-board-webApp/service-worker.js",
-    "static/css/main.ab87663f.chunk.css.map": "/kanban-board-webApp/static/css/main.ab87663f.chunk.css.map",
-    "static/js/2.adc68475.chunk.js.LICENSE.txt": "/kanban-board-webApp/static/js/2.adc68475.chunk.js.LICENSE.txt",
-    "static/media/App.css": "/kanban-board-webApp/static/media/5310589_1920.58dd2581.jpg",
-    "static/media/close.svg": "/kanban-board-webApp/static/media/close.43875f2e.svg"
+    "static/js/2.fa1cdbbc.chunk.js.LICENSE.txt": "/kanban-board-webApp/static/js/2.fa1cdbbc.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.643c165b.js",
-    "static/js/2.adc68475.chunk.js",
-    "static/css/main.ab87663f.chunk.css",
-    "static/js/main.76006809.chunk.js"
+    "static/js/2.fa1cdbbc.chunk.js",
+    "static/js/main.2327bb24.chunk.js"
   ]
 }
