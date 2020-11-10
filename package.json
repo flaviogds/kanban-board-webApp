@@ -2,7 +2,7 @@
   "name": "kanban-web",
   "version": "1.0.1",
   "private": true,
-  "homepage": "https://flaviogds.github.io/kanban-board-webApp",
+  "homepage": "https://flaviogds.github.io/kanban-board-webApp/",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
